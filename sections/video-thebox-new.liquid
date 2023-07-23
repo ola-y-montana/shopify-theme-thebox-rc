@@ -1,0 +1,189 @@
+
+<div class="video-section-thebox-wrapper" data-section-id="{{ section.id }}">
+ {% include "video-thebox" %}
+</div>
+
+{% schema %}
+{
+   "name":"Video Section TheBox",
+   "class":"thebox-section video-section-thebox",
+   "settings":[
+      {
+         "type":"checkbox",
+         "id":"show_controls",
+         "label":{
+            "en":"Show Controls",
+            "es":"Mostrar controles"
+         },
+         "default":true
+      },
+      {
+         "type":"checkbox",
+         "id":"loop",
+         "label":{
+            "en":"Auto Replay",
+            "es":"Auto Replay"
+         },
+         "default":true
+      },
+      {
+         "type":"checkbox",
+         "id":"play_on_scroll",
+         "label":{
+            "en":"Play on Scroll",
+            "es":"Autoplay al scrollear"
+         },
+         "default":true
+      },
+      {
+         "type":"checkbox",
+         "id":"enable_sound",
+         "label":{
+            "en":"Enable Sound",
+            "es":" Sonido"
+         },
+         "default":true
+      },
+      {
+         "type":"checkbox",
+         "id":"show_title",
+         "label":{
+            "en":"Show Title",
+            "es":"Mostrar Título"
+         },
+         "default":true
+      },
+      {
+         "type":"checkbox",
+         "id":"video_full_width",
+         "label":{
+            "en":"Full width",
+            "es":"Ancho completo"
+         },
+         "default":true
+      },
+      {
+         "type":"text",
+         "id":"title",
+         "label":{
+            "en":"Heading",
+            "es":"Título"
+         }
+      },
+      {
+         "type":"text",
+         "id":"custom_height",
+         "label":{
+            "en":"Custom height",
+            "es":"Altura personalizada"
+         }
+      },
+      {
+         "type":"text",
+         "id":"custom_width",
+         "label":{
+            "en":"Custom width",
+            "es":"Anchura personalizada"
+         }
+      },
+      {
+         "type":"text",
+         "id":"custom_top_spacing",
+         "label":{
+            "en":"Custom top spacing",
+            "es":"Espaciado superior"
+         }
+      },
+      {
+         "type":"text",
+         "id":"custom_bottom_spacing",
+         "label":{
+            "en":"Custom bottom spacing",
+            "es":"Espaciado inferior"
+         }
+      },
+      {
+         "type":"text",
+         "id":"custom_top_spacing_mobile",
+         "label":{
+            "en":"Custom top spacing",
+            "es":"Espaciado superior Mobile"
+         }
+      },
+      {
+         "type":"text",
+         "id":"custom_bottom_spacing_mobile",
+         "label":{
+            "en":"Custom bottom spacing",
+            "es":"Espaciado inferior Mobile"
+         }
+      },
+      {
+         "type":"text",
+         "id":"video_link",
+         "label":{
+            "en":"Video link",
+            "es":"Enlace de video"
+         }
+      },
+      {
+         "type":"text",
+         "id":"video_link_mobile",
+         "label":{
+            "en":"Video link Mobile",
+            "es":"Enlace de video Mobile"
+         }
+      },
+      {
+         "type":"url",
+         "id":"link",
+         "label":{
+            "en":"Link on click",
+            "es":"Enlace al hacer click"
+         }
+      },
+      {
+         "type":"image_picker",
+         "id":"image",
+         "label":{
+            "en":"Cover image",
+            "es":"Imagen de portada"
+         },
+         "info":{
+            "en":"Always shown on desktop devices",
+            "es":"Mostrar siempre dispositivos desktop"
+         }
+      },
+      {
+         "type":"image_picker",
+         "id":"image_mobile",
+         "label":{
+            "en":"Cover image mobile",
+            "es":"Imagen de portada mobile"
+         },
+         "info":{
+            "en":"Always shown on mobile devices",
+            "es":"Mostrar siempre dispositivos móviles"
+         }
+      }
+   ],
+   "presets":[
+      {
+         "name":{
+            "en":"Video TheBox",
+            "es":"Video TheBox"
+         },
+         "category":{
+            "en":"TheBox Theme",
+            "es":"TheBox Theme"
+         }
+      }
+   ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

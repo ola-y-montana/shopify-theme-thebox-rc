@@ -1,0 +1,53 @@
+{% capture section_class %}{{ section_id }}{% endcapture %}
+<style>
+  {{ section_class }} .brands-grid-thebox-wrapper .main-title {
+    font-family: 'hurme';
+    font-weight: 600;
+    /*text-transform: uppercase;*/
+    margin: auto;
+    text-align: center;
+    margin-bottom: 35px;
+  }  
+  @media screen and (max-width: 425px) {
+    {{ section_class }} .brands-grid-thebox-wrapper .main-title {
+		font-size: 1.1rem;
+    	margin-bottom: 15px;
+    }
+    {{ section_class }} .brands-grid-thebox-wrapper .main-title {
+    	font-size: 1.1rem;
+    	margin-bottom: 15px;
+  }
+}
+</style>
+
+<div class="brands-grid-thebox-wrapper">
+  <h1 class="main-title">
+  	{{ section.settings.title }}
+  </h1>
+</div>
+
+{% schema %}
+  {
+    "name": {
+      "en": "Title Omnichanel",
+      "es": "Titulo Omnicanal"
+    },
+    "class": "thebox-section brands-grid-thebox",
+    "settings": [{
+      "type": "text",
+      "id": "title",
+      "label": {
+        "en": "Heading",
+        "es": "Título"
+      },
+      "default": "¡Es muy sencillo! Sigue las instrucciones"
+	}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

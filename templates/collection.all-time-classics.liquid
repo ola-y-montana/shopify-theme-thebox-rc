@@ -1,0 +1,47 @@
+<style>
+  .landing-all-time-classics h2 {
+    font-weight: 500 !important;
+    font-size: 1.3rem !important;
+  }
+  .landing-all-time-classics .slideshow__image, .landing-all-time-classics .see-more-button {
+    cursor: pointer;
+  }
+  @media screen and (min-width: 768px) {
+    .landing-all-time-classics h2 {
+      font-size: 28px !important;
+      margin-bottom: 25px !important;
+    }
+  }
+</style>
+
+<div class="page landing landing-all-time-classics">
+  {% section 'slideshow-thebox-3' %}
+  {% section 'slideshow-mobile-thebox-3' %}
+  {% section 'images-bar-tbx-v2' %}
+  {% comment %}{% section 'products-carousel-fix' %}{% endcomment %}
+  {% comment %]{% section 'title-description-image-tbx-v2' %}{% endcomment %}
+  {% comment %}{% section 'instafeed' %}{% endcomment %}
+</div>
+
+
+<script>  
+  window.addEventListener('DOMContentLoaded', (event) => {
+    var containerEl = document.querySelector('.landing-all-time-classics')
+    var scrollTriggersEls = containerEl.querySelectorAll(".slideshow__image, .see-more-button")
+
+    var collectionTargetEl = document.querySelector(".collection-custom-title-wrapper-desktop")
+    var url = new URL(window.location.href);
+
+    if (url.searchParams.get('pf_t_categorias')) {
+      collectionTargetEl.scrollIntoView({ block: "start", behavior: 'smooth' })
+    }
+
+    scrollTriggersEls.forEach(element => {
+      element.addEventListener('click', function(e) {
+        collectionTargetEl.scrollIntoView({ block: "start", behavior: 'smooth' })
+      })
+    });
+  });
+</script>
+
+{% section 'collection-template' %}

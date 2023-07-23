@@ -1,0 +1,96 @@
+{% capture component_class %}enorm-product-carousel_{{section.id}}{% endcapture %} 
+
+<style>
+
+
+.{{ component_class }} .enap_pro_small_heading  {
+  text-align: center !important;
+  float: none !important;
+  display: block;
+  margin-bottom: 35px;  
+}
+
+.{{ component_class }} .enormproductslider {
+  margin-bottom: 35px;
+}
+
+.{{ component_class }} .enap_pro_small_heading a {
+    font-size: 14px;
+    color: #000000 !important;
+    text-decoration: none;
+    border: 1px solid;
+    padding: 8px 15px;
+}
+
+@media all and (min-width: 768px) {
+  .{{ component_class }} .enormproductslider {
+    margin-bottom: 70px;
+  }
+}
+</style>
+
+{% if section.settings.custom_css != blank %}
+{% assign component_selector = component_class | prepend: '.' %} 
+<style>
+	{{ section.settings.custom_css | replace: '$component_class', component_selector }}
+</style>
+{% endif %}
+
+<div class="carrusel-de-pdtos-enorm {{ component_class }}" data-carousel-title="{{ section.settings.title }}">
+  {{ section.settings.content }}
+</div>
+
+{% if section.settings.custom_js != blank %}
+	<script>
+      function defer(method) {
+        if (window.jQuery) {
+          method();
+        } else {
+          setTimeout(function() { defer(method) }, 50);
+        }
+      }
+      defer(function(){
+        $(document).ready(function(){
+      		{{ section.settings.custom_js }}
+        })
+      })
+	</script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Carrusel de Pdtos. Enorm",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "título",
+        "default": "Carrusel de Pdtos. Enorm"
+      },
+      {
+        "type":"html",
+        "id":"content",
+        "label": "Código de Carrusel"
+      },
+      {
+        "type": "html",
+        "id": "custom_css",
+        "label": "CSS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_html",
+        "label": "HTML personalizado"
+      }
+    ],
+    "presets": [{
+      "name": "Carrusel de Pdtos. Enorm"
+    }]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

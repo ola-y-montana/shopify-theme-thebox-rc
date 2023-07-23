@@ -1,0 +1,102 @@
+<script>
+  window.onload = function() {
+    const btnAdded = false
+    const intervalId = window.setInterval(function(){ 
+          try {
+           let myiFrame = document.getElementById("ShopifyChat");
+           if (!myiFrame) { return }
+           let doc = myiFrame.contentDocument;
+           doc.head.innerHTML = doc.head.innerHTML + `
+            <style id="custom_css">
+              .interstitial-view__welcome {
+                background: black;
+              }
+              .interstitial-view__welcome.is-mobile > div {
+                margin-bottom: -1px;
+              }
+              .interstitial-view__welcome [name=closeChat] {
+                border: 1px solid;
+                border-radius: 100%;
+                padding: 5px;
+                background: white;
+                color: black;
+              }
+              .interstitial-view__welcome .close-btn {
+                display: none;
+              }
+              @media screen and (min-device-width: 768px) {
+                .interstitial-view__welcome .close-btn {
+                  display: block !important;
+                }
+              }
+            </style>`;
+
+            const chatAppEl = doc.querySelector('.chat-app')
+
+           const chatWindowBackButton = doc.querySelector('[name="backButton"]')
+
+            function addCloseBtn() {
+                const myiFrame = document.getElementById("ShopifyChat");
+                const doc = myiFrame.contentDocument;
+                const chatAppEl = doc.querySelector('.chat-app')
+                const parentEl = doc.querySelector('.interstitial-view__welcome')
+
+                if (!parentEl) {
+                  return
+                }
+              
+                const desktopCloseBtn = doc.querySelector('.chat-app--close-button')
+                let closeBtn = parentEl.querySelector('button[name="closeChat"]')
+
+                if (!closeBtn) {
+                    const closeBtn = doc.createElement('div')
+                    const closeBtnTmpl = `<button aria-label="Cerrar ventana de chat" name="closeChat"><svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg" class="chat-header__close_button_mobile">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.7159 15.5555L24.2747 8.99673C24.872 8.39937 24.872 7.43381 24.2747 6.83645C23.6773 6.23909 22.7118 6.23909 22.1144 6.83645L15.5556 13.3952L8.99689 6.83645C8.39953 6.23909 7.43398 6.23909 6.83662 6.83645C6.23926 7.43381 6.23926 8.39937 6.83662 8.99673L13.3954 15.5555L6.83662 22.1142C6.23926 22.7116 6.23926 23.6771 6.83662 24.2745C7.13453 24.5724 7.52564 24.7221 7.91676 24.7221C8.30787 24.7221 8.69898 24.5724 8.99689 24.2745L15.5556 17.7158L22.1144 24.2745C22.4123 24.5724 22.8034 24.7221 23.1945 24.7221C23.5856 24.7221 23.9768 24.5724 24.2747 24.2745C24.872 23.6771 24.872 22.7116 24.2747 22.1142L17.7159 15.5555Z" fill="currentColor"></path>
+                        <mask id="svg-CancelIcon-1ZgYb6R" mask-type="alpha" maskUnits="userSpaceOnUse" x="6" y="6" width="19" height="19">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.7159 15.5555L24.2747 8.99673C24.872 8.39937 24.872 7.43381 24.2747 6.83645C23.6773 6.23909 22.7118 6.23909 22.1144 6.83645L15.5556 13.3952L8.99689 6.83645C8.39953 6.23909 7.43398 6.23909 6.83662 6.83645C6.23926 7.43381 6.23926 8.39937 6.83662 8.99673L13.3954 15.5555L6.83662 22.1142C6.23926 22.7116 6.23926 23.6771 6.83662 24.2745C7.13453 24.5724 7.52564 24.7221 7.91676 24.7221C8.30787 24.7221 8.69898 24.5724 8.99689 24.2745L15.5556 17.7158L22.1144 24.2745C22.4123 24.5724 22.8034 24.7221 23.1945 24.7221C23.5856 24.7221 23.9768 24.5724 24.2747 24.2745C24.872 23.6771 24.872 22.7116 24.2747 22.1142L17.7159 15.5555Z" fill="currentColor"></path>
+                        </mask>
+                        <g mask="url(#svg-CancelIcon-1ZgYb6R)">
+                        <rect width="32.0833" height="32.0833" transform="translate(0.27771 0.27771)" fill="none"></rect></g></svg></button>`
+      
+                    closeBtn.innerHTML = closeBtnTmpl
+                    closeBtn.style = 'background: rgb(0, 0, 0);'
+                    closeBtn.classList.add('close-btn')
+                    closeBtn.addEventListener('click', () => desktopCloseBtn.click())
+                    
+                    parentEl.insertBefore(closeBtn, parentEl.firstChild); 
+                }
+            } 
+
+            function callback(mutationList, observer) {
+                mutationList.forEach(function(mutation) {
+                  if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const chatClasses = mutation.target.classList
+                    //console.log(mutation.target, chatClasses.contains('chat-app--is-open') && !chatClasses.contains('chat-app--is-mobile'))
+                    if (chatClasses.contains('chat-app--is-open') && !chatClasses.contains('chat-app--is-mobile')) {
+                      //console.log('executed', mutation.target)
+                      addCloseBtn()
+                    }
+                  }
+                })
+            }
+
+            addCloseBtn()
+
+            const observer = new MutationObserver(callback)
+            observer.observe(chatAppEl, {attributes: true})
+              
+            // console.log(doc.head.innerHTML)
+            if (doc.head.innerHTML) {
+              window.clearInterval(intervalId)
+            }
+  
+           chatAppEl.addEventListener('DOMSubtreeModified', function(event) {
+             addCloseBtn()
+           })
+  
+          } catch(error) {
+          	//console.log(error)
+          }
+    }, 700);
+}
+</script>

@@ -1,0 +1,86 @@
+{%- capture collection_tags -%}{{ current_tags | join: "+"}}{%- endcapture -%}
+{% assign collection_tags_down =  collection_tags | downcase  %}
+
+{% if collection_tags == blank %}
+
+  <style>
+    @media screen and (max-width: 425px) {
+      .main-content {
+        padding-top: 15px;
+      }
+    }
+    .main-content {
+    	padding-top: 30px;
+    }
+  </style>
+
+
+  <div class="page-width page page-brands">
+    <div class="grid">
+      <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+        {% section 'brands-grid' %}
+      </div>
+    </div>
+  </div>
+
+
+
+{% elsif collection_tags_down == 'dvk' %}
+
+  <style>
+    .landing-dvk h2 {
+      font-weight: 500 !important;
+      font-size: 1.3rem !important;
+    }
+    .landing-dvk .slideshow__image, .landing-dvk .see-more-button {
+    	cursor: pointer;
+    }
+    @media screen and (min-width: 768px) {
+      .landing-dvk h2 {
+          font-size: 28px !important;
+          margin-bottom: 25px !important;
+      }
+    }
+    .page.landing.landing-dvk {
+    margin-bottom: -50px;
+}
+  </style>
+
+  <div class="page landing landing-dvk">
+      {% section 'slideshow-thebox' %}
+      {% section 'slideshow-mobile-thebox' %}
+      {% section 'images-bar-tbx-v2' %}
+      {% comment %}{% section 'products-carousel-fix' %}{% endcomment %}
+      {% comment %]{% section 'title-description-image-tbx-v2' %}{% endcomment %}
+      {% comment %}{% section 'instafeed' %}{% endcomment %}
+  </div>
+
+	
+<script>  
+  window.addEventListener('DOMContentLoaded', (event) => {
+    var containerEl = document.querySelector('.landing-dvk')
+    var scrollTriggersEls = containerEl.querySelectorAll(".slideshow__image, .see-more-button")
+    
+    var collectionTargetEl = document.querySelector(".collection-custom-title-wrapper-desktop")
+    var url = new URL(window.location.href);
+
+    if (url.searchParams.get('pf_t_categorias')) {
+      collectionTargetEl.scrollIntoView({ block: "start", behavior: 'smooth' })
+    }
+
+    scrollTriggersEls.forEach(element => {
+      element.addEventListener('click', function(e) {
+        collectionTargetEl.scrollIntoView({ block: "start", behavior: 'smooth' })
+      })
+    });
+  });
+</script>
+	
+  {% section 'collection-template' %}
+
+
+{% else %}
+
+  {% section 'collection-template' %}
+
+{% endif %}

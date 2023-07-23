@@ -1,0 +1,368 @@
+{% capture component_class %}banner-html-tbx-v2_{{section.id}}{% endcapture %} 
+
+<style>
+  .{{ component_class }}  {
+    display: flex;
+    background: {{ section.settings.bg_color }};
+    margin: auto;
+	max-width: 100%;
+    {% if section.settings.width == blank or section.settings.full_width %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.width }};
+    {% endif %}
+    {% if section.settings.custom_top_spacing_mobile != blank %}
+    	margin-top: {{ section.settings.custom_top_spacing_mobile }};
+    {% endif %}
+    {% if section.settings.custom_bottom_spacing_mobile != blank %}
+    	margin-bottom: {{ section.settings.custom_bottom_spacing_mobile }};
+    {% endif %}
+  }
+  .{{ component_class }} .banner-x {
+    display: flex;
+    width: 100%;
+    max-width: 70%;
+    min-height: 140px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    padding: 15px;
+  }
+  .{{ component_class }} .banner-x .banner-x-title {
+    font-family: roboto-bold,Arial,sans-serif;
+    width: 100%;
+    color: {{ section.settings.text_color }};
+    font-size: 17px;
+    font-weight: 800;
+  }
+  .{{ component_class }} .banner-x .banner-x-description {
+    width: 100%;
+    color: {{ section.settings.text_color_desc }}!important;
+    font-size: 13px;
+    margin: 10px auto;
+  }
+  .{{ component_class }} .banner-z .btn {
+    width: 340px;
+    padding: 15px;
+    background: {{ section.settings.button_bg_color }}!important;
+    color: {{ section.settings.button_text_color }}!important;
+    border: 1px solid {{ section.settings.button_border_color | default: section.settings.button_text_color }};
+    font-size: 15px;
+    max-width: 70%;
+    font-weight: bold
+  }
+  .{{ component_class }} .btn.btn-primary:hover {
+    background: {{ section.settings.button_bg_color | color_lighten: 40 }}!important;
+  }
+  .{{ component_class }} .banner-x .btn.disabled {
+    pointer-events: none;
+  }
+  @media only screen and (min-width: 768px) {
+    .{{ component_class }}  {
+      {% if section.settings.custom_top_spacing != blank %}
+      margin-top: {{ section.settings.custom_top_spacing }};
+      {% endif %}
+      {% if section.settings.custom_bottom_spacing != blank %}
+      margin-bottom: {{ section.settings.custom_bottom_spacing }};
+      {% endif %}
+    }
+    .{{ component_class }} .banner-x .banner-x-title {
+      font-size: 30px;
+      font-weight: 700;
+  	}
+    .{{ component_class }} .banner-x .banner-x-description {
+      font-size: 23px;
+      font-weight: 500;
+      color: #000;
+    }
+    .{{ component_class }} .banner-z {
+      padding-top: 50px;
+    }
+  }
+  @media (max-width: 600px) {
+    .{{ component_class }} {
+      display: block!important;
+    }
+    .{{ component_class }} .banner-x {
+      display: flex;
+      width: 100%;
+      max-width: 100%;
+      min-height: 140px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-wrap: wrap;
+      padding: 28px;
+   }
+   .banner-z {
+     padding-bottom: 30px;
+     padding-top: 0px;
+     text-align: center;
+   }
+   a.btn.btn-primary {
+    font-size: 13px!important;
+   }
+ }
+</style>
+
+{% if section.settings.custom_css != blank %}
+{% assign component_selector = component_class | prepend: '.' %} 
+<style>
+	{{ section.settings.custom_css | replace: '$component_class', component_selector }}
+</style>
+{% endif %}
+
+<div class="{{ component_class }}">
+    <div class="banner-x">
+      {% if section.settings.show_title != blank %}
+      	<div class="banner-x-title">{{ section.settings.title }}</div>
+      {% endif %}
+      {% if section.settings.show_description != blank %}
+      	<div class="banner-x-description">{{ section.settings.description_html | default: section.settings.description }}</div>
+      {% endif %}
+      {% if section.settings.custom_html != blank %}
+  		{{ section.settings.custom_html }}
+  	  {% endif %}
+  
+    </div>
+  	    <div class="banner-z">
+    {% if section.settings.show_button != blank %}
+      	<a href="{{ section.settings.link | default: '#' }}" class="btn btn-primary {% if section.settings.link == blank %}disabled{% endif %}">{{ section.settings.button_text }}</a>
+	  {% endif %}
+      
+    </div>
+</div>
+
+{% if section.settings.custom_js != blank %}
+	<script>
+      function defer(method) {
+        if (window.jQuery) {
+          method();
+        } else {
+          setTimeout(function() { defer(method) }, 50);
+        }
+      }
+      defer(function(){
+        $(document).ready(function(){
+      		{{ section.settings.custom_js }}
+        })
+      })
+	</script>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Banner HTML TBX v2",
+	"class": "thebox-section banner-html-tbx-v2-wrapper",
+    "settings": [
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": {
+          "en": "Background Color",
+          "es": "Color de Fondo"
+       },
+        "default": "#FECFCA"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": {
+          "en": "Text Color",
+          "es": "Color de Text"
+       },
+        "default": "#000000"
+      },
+	{
+        "type": "color",
+        "id": "text_color_desc",
+        "label": {
+          "en": "Text Color Descripción",
+          "es": "Color de Text Description"
+       },
+        "default": "#000000"
+      },
+
+      {
+        "type": "color",
+        "id": "button_bg_color",
+        "label": {
+          "en": "Button Background Color",
+          "es": "Color de Fondo de Botón"
+       },
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": {
+          "en": "Button Text Color",
+          "es": "Color de Texto de Botón"
+       },
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "button_border_color",
+        "label": {
+          "en": "Button Border Color",
+          "es": "Color de Borde de Botón"
+       },
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": {
+          "en": "Show Title",
+          "es": "Mostrar Título"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": {
+          "en": "Title",
+          "es": "Título"
+       },
+	   "default": "Este es el título"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": {
+          "en": "Show description",
+          "es": "Mostrar Descripción"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": {
+          "en": "Description",
+          "es": "Descripción"
+       },
+	   "default": "Este es un texto de descripción para tu sección"
+      },
+      {
+        "type": "html",
+        "id": "description_html",
+        "label": "Descripción HTML"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_button",
+        "label": {
+          "en": "Show Button",
+          "es": "Mostrar Botón"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": {
+          "en": "Button label",
+          "es": "Texto del botón"
+       },
+	   "default": "Comprar Ahora"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": {
+          "en": "Link",
+          "es": "Enlace"
+        }
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": {
+          "en": "Full width",
+          "es": "Ancho completo"
+        },
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "width",
+        "label": {
+          "en": "Custom width",
+          "es": "Ancho personalizado"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_height",
+        "label": {
+          "en": "Custom height",
+          "es": "Altura personalizada"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing",
+        "label": {
+          "en": "Custom top spacing",
+          "es": "Espaciado superior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing",
+        "label": {
+          "en": "Custom bottom spacing",
+          "es": "Espaciado inferior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing_mobile",
+        "label": {
+          "en": "Custom top spacing mobile",
+          "es": "Espaciado superior mobile"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing_mobile",
+        "label": {
+          "en": "Custom bottom spacing mobile",
+          "es": "Espaciado inferior mobile"
+       }
+      },
+      {
+        "type": "html",
+        "id": "custom_js",
+        "label": "Código JS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_css",
+        "label": "Código CSS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_html",
+        "label": "Plantilla HTML personalizada"
+      }
+	],
+    "presets": [
+      {
+        "name": {
+            "en": "Banner HTML TBX v2",
+            "es": "Banner HTML TBX v2"
+        },
+        "category": {
+          "en": "TheBox Theme v2",
+          "es": "TheBox Theme v2"
+        }
+      }
+    ]
+}
+{% endschema %}
+

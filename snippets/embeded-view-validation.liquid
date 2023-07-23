@@ -1,0 +1,18 @@
+<style>
+  .embeded-view #shopify-section-header,
+  .embeded-view .newsletter-carousel-tbx-v2-wrapper,
+  .embeded-view .site-footer {
+    display: none;
+  }
+  .embeded-view #PageContainer {
+    padding-top: 0 !important;
+  }
+</style>
+
+<script>
+     var windowParams = new URLSearchParams(window.location.search)
+     var fromParam = windowParams.get('from')
+     if (fromParam === 'mobile') {
+            document.body.classList.add('embeded-view') 
+     }
+</script>

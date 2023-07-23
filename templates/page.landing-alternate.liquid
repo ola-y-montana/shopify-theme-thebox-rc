@@ -1,0 +1,38 @@
+<style>
+  .page-landing .page-width {
+  		padding-left: 0;
+    	padding-right: 0;
+  }
+  .page-landing .page-width {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+  .page-landing .grid {
+    margin: auto;
+  }
+  .page-landing .grid__item {
+  	padding: 0;
+  }
+  .page-landing .bg {
+    margin: auto;
+    width: 100%;
+  }
+  @media only screen and (min-width: 750px) {
+  	.page-landing {
+      	margin-top: -55px;
+  	}
+  }
+</style>
+
+<div class="page page-landing">
+  <div class="page-width">
+    <div class="grid">
+      <div class="grid__item">
+        <div class="rte">
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

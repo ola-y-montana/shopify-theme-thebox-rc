@@ -1,0 +1,45 @@
+<div style="clear:both;">
+  <p class="instafield-wrapper" style="display:none">
+    <label for="instafield">Usuario de Instagram:</label>
+    <input class="instafield" id="instafield" type="text" name="customer[note][instagram]" value="@" disabled/>
+  </p>
+</div>
+
+<script>
+(() => {
+  //var windowParams = new URLSearchParams(window.location.search)
+  //var returnUrl = windowParams.get('return_url') 
+  //console.log(returnUrl)
+  //if (returnUrl) {
+    //var returnUrlParams = new URLSearchParams(returnUrl)
+    //console.log(returnUrlParams.get('campaign'))
+    //if (returnUrlParams.get('campaign') === 'instafollow') {
+      //console.log('show')
+      //var instaFieldWrapper = document.querySelector('.instafield-wrapper')
+      //var instaFieldInput = instaFieldWrapper.querySelector('input')
+      //if (instaFieldWrapper) {
+        //instaFieldWrapper.style.display = 'block'
+        //instaFieldInput.removeAttribute('disabled')
+        //instaFieldInput.addEventListener('keydown', function(event) {
+          //if (event.key === 'Backspace' && instaFieldInput.value && instaFieldInput.value === '@') {
+            //event.preventDefault()
+          //}
+        //})
+      //}
+    //}
+  //}
+
+  var instaFieldWrapper = document.querySelector('.instafield-wrapper')
+  var instaFieldInput = instaFieldWrapper.querySelector('input')
+  if (instaFieldWrapper) {
+      instaFieldInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Backspace' && instaFieldInput.value && instaFieldInput.value === '@') {
+          event.preventDefault()
+        }
+      })
+      instaFieldWrapper.style.display = 'block'
+      instaFieldInput.removeAttribute('disabled')
+  }
+
+})();
+</script>

@@ -1,0 +1,25 @@
+{% capture collection_custom_title %}{% include 'collection_custom_param', key: 'collection_title', default: collection.title %}{% endcapture %}
+
+{%- capture collection_tags -%}{{ current_tags | join: "+"}}{%- endcapture -%}
+  
+{% if collection_tags != blank %}
+    {% assign collection_tag_key = 'collection_tag_title_' | append: collection_tags | handleize %} 
+	{% capture collection_custom_title %}{% include 'collection_custom_param', key: collection_tag_key, default: current_tags[0] %}{% endcapture %}
+{% endif %}
+
+{% assign collection_custom_title = collection_custom_title | strip %}
+
+{% assign collection_custom_title = collection_custom_title | strip %}
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,602 @@
+<!-- banner-collection-section.liquid -->
+
+{% schema %}
+{
+  "name": "Banner y colecciones",
+  "settings": [
+    {
+      "type": "image_picker",
+      "label": "Imagen del Banner Principal",
+      "id": "main_banner_image"
+    },
+    {
+      "type": "image_picker",
+      "label": "Imágen Banner Colección 1",
+      "id": "sw_md_section_banners_1"
+    },
+    {
+      "type": "collection",
+      "label": "Colección 1",
+      "id": "sw_md_collection_1"
+    },
+    {
+      "type": "image_picker",
+      "label": "Imágen Banner Colección 2",
+      "id": "sw_md_section_banners_2"
+    },
+    {
+      "type": "collection",
+      "label": "Colección 2",
+      "id": "sw_md_collection_2"
+    },
+        {
+      "type": "image_picker",
+      "label": "Imágen Banner Colección 3",
+      "id": "sw_md_section_banners_3"
+    },
+    {
+      "type": "collection",
+      "label": "Colección 3",
+      "id": "sw_md_collection_3"
+    },
+        {
+      "type": "image_picker",
+      "label": "Imágen Banner Colección 4",
+      "id": "sw_md_section_banners_4"
+    },
+    {
+      "type": "collection",
+      "label": "Colección 4",
+      "id": "sw_md_collection_4"
+    },
+    {
+      "type": "image_picker",
+      "label": "Imágen Banner Colección 5",
+      "id": "sw_md_section_banners_5"
+    },
+    {
+      "type": "collection",
+      "label": "Colección 5",
+      "id": "sw_md_collection_5"
+    },
+    {
+      "type": "image_picker",
+      "label": "Imágen Banner Colección 6",
+      "id": "sw_md_section_banners_6"
+    },
+    {
+      "type": "collection",
+      "label": "Colección 6",
+      "id": "sw_md_collection_6"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner y colecciones",
+      "category": "Personalizado"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+<div id="mini-site-category-landing" class="mixnmatchcontent js-search-replace-content">
+   <div class="category-landing-main">
+      <div class="slot-item slot-item-category-landing-main" data-sid="category-landing-main">
+         <div class="contentasset addimgalt contentasset-ux-landing-starwars-mandalorian" data-cid="ux-landing-starwars-mandalorian" data-content-title="ux-landing-starwars-mandalorian">
+            <!-- Swiper -->
+            <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+            <!-- UX Menu -->
+            <link rel="stylesheet" href="https://ssl.quiksilver.com/static/DC/default/category-assets/modules/ux-menu/css/ux-menu.min.css">
+            <!-- E-shop Poppin -->
+            <link rel="stylesheet" href="https://ssl.quiksilver.com/static/DC/default/category-assets/experiences/eshop_popin/css/eshop_popin.min.css">
+            <link rel="stylesheet" href="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/css/style.min.css">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+           <style>
+            @media all and (max-width: 620px) {
+              .main-content {
+                  padding-top: 0px;
+              }
+              .starwars .title {
+                font-size: 1.4rem;
+                margin-bottom: 0;
+              }
+              .starwars .copy  {
+                line-height: 2rem;
+              }
+              .starwars .copy strong {
+                font-weight: normal;
+                line-height: 1.5rem;
+                font-size: 0.85rem;
+              }
+              .starwars .banner .content-wrapper .description-wrapper {
+                padding-top: 20px;
+                padding-bottom: 25px;
+              }
+             .starwars .products .mobile {
+               padding-top: 0;
+             }
+              .btn-dropdown {
+                font-size: 15px !important;
+              }
+            }
+             .starwars .title {
+                margin-bottom: 0 !important;
+              }
+             .products.grogu_products .desktop {
+                padding: 0;
+                background: white;
+             }
+            .products.grogu_products .mobile {
+              background: white;
+            }
+             .dropdown {
+                position: relative;
+                display: inline-block;
+                margin-bottom: 30px;
+              }
+              
+              .btn-dropdown {
+                background-color: transparent;
+                border: 3px solid white;
+                color: white;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+              }
+
+             .btn-dropdown .arrow {
+                display: inline-block;
+                margin-left: 8px;
+              }
+             
+              .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.92);
+                min-width: 250px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 9;
+                width: 100%;
+              }
+              
+              .dropdown-content a {
+                display: block;
+                padding: 12px 16px;
+                text-decoration: none;
+                color: white;
+              }
+              
+              .dropdown-content a:hover {
+                background-color: #ddd;
+                color: black;
+              }
+              
+              .dropdown:hover .dropdown-content {
+                display: block;
+              }
+             .starwars .products .product .product-name {
+               color: black !important;
+             }
+             .starwars .products .product .product-price {
+               color: red !important;
+             }
+             .starwars .gallery .title, .starwars .products .title, .starwars .videoloop .title {
+               letter-spacing: 15px;
+             }
+             @media only screen and (min-width: 750px){
+               .main-content {
+                  padding-top: 0px;
+                }
+               .starwars .banner .content-wrapper .description-wrapper {
+                  padding: 80px 0;
+                  padding-top: 50px;
+               }
+              .starwars .copy {
+                 max-width: 100%;
+                 width: 750px;
+                 margin: auto;
+                 margin-top: 6px;
+              }
+              .starwars .copy strong {
+                font-weight: normal;
+                font-size: 21px;
+              }
+               .starwars .btn-dropdown {
+                 font-size: 22px;
+               }
+               .starwars .gallery .title, .starwars .products .title, .starwars .videoloop .title {
+                  letter-spacing: 38px;
+               }
+             }
+            </style>
+           <script>
+            
+            function scrollToElement(event) {
+              event.preventDefault();
+              var targetText = event.target.dataset.href
+              var targetElement = document.querySelector(targetText);
+            
+              if (targetElement) {
+                var offs = targetElement.getBoundingClientRect();
+                var targetOffset = offs.top + window.pageYOffset - 170; // Offset ajustable según tus necesidades
+                window.scroll({ top: targetOffset, behavior: 'smooth' });
+              }
+            }
+           </script>
+            <div id="transition_mask">
+              <video src="https://cdn.shopify.com/videos/c/o/v/8dff75eb9e1f48d0acdd1960099b0b9e.mp4" muted playsinline loop></video>
+            </div>
+            <!-- UX menu -->
+            <!-- Main menu container -->
+            
+            <!-- UX content -->
+            <div class="ux-wrapper starwars">
+               <section class="banner" id="intro">
+                  <article class="content-wrapper">
+                      <video id="banner" src="https://cdn.shopify.com/videos/c/o/v/8dff75eb9e1f48d0acdd1960099b0b9e.mp4" autoplay loop muted playsinline></video>
+                    <script>
+                      document.addEventListener("DOMContentLoaded", function () {
+                        var video = document.getElementById("banner");
+                      
+                        function playVideo() {
+                          video.play().catch(function (error) {
+                            console.log("Error al reproducir el video: ", error);
+                          });
+                        }
+                      
+                        document.body.addEventListener("click", function () {
+                          playVideo();
+                          // Remover el evento después de la primera interacción
+                          document.body.removeEventListener("click", playVideo);
+                        });
+                      });
+                    </script>
+                     <div class="description-wrapper">
+                         <div class="dropdown">
+                            <button class="btn-dropdown">COMPRAR POR COLECCIÓN <i class="fas fa-caret-down arrow"></i></button>
+                            <div class="dropdown-content">
+                              <a data-href="#grogu" onclick="scrollToElement(event)">GROGU™ COLLECTION</a>
+                              <a data-href="#dark-trooper" onclick="scrollToElement(event)">DARK TROOPER™ COLLECTION</a>
+                              <a data-href="#ahsoka-tano" onclick="scrollToElement(event)">AHSOKA TANO™ COLLECTION</a>
+                              <a data-href="#bounty-hunter" onclick="scrollToElement(event)">BOUNTY HUNTER™ COLLECTION</a>
+                              <a data-href="#essentials" onclick="scrollToElement(event)">ESSENTIALS COLLECTION</a>
+                              <a data-href="#luke-skywalker" onclick="scrollToElement(event)">LUKE SKYWALKER™ COLLECTION</a>
+                            </div>
+                          </div>
+                        <h1 class="title">DC x MANDALORIAN | PASAPORTE A LA GALAXIA</h1>
+                        <p class="copy sht-text"><strong>Únete a Mando y Grogu en un viaje por la galaxia ¡Vive la aventura intergaláctica!. </strong></p>
+                     </div>
+                  </article>
+               </section>
+
+               <section class="videoloop">
+                  <h2 id="grogu" class="title" style="background: url(https://cdn.shopify.com/s/files/1/0373/4513/2676/files/GROGU-background-texture.png?v=1689987869); padding: 20px 0;">GROGU COLLECTION</h2>
+               </section>
+               {% if section.settings.sw_md_collection_1 %}
+                <section class="products grogu_products" id="grogu_products">
+                  <div class="mobile">
+                    <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_1].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="eager">
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="desktop" style="--bg-image: url('//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/grogu/231-Star-Wars-Grogu-Background.jpg');">
+                     <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_1].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <div class="product-img-wrapper">
+                            <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="eager">
+                          </div>
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                     </div>
+                  </div>
+               </section>
+              {% endif %}
+
+               <section class="videoloop">
+                  <h2 id="dark-trooper" class="title" style="background: url(https://cdn.shopify.com/s/files/1/0373/4513/2676/files/DARKTROOPER-background-texture.png?v=1689999284); padding: 20px 0;">DARKTROOPER COLLECTION</h2>
+               </section>
+               {% if section.settings.sw_md_collection_2 %}
+                <section class="products grogu_products" id="grogu_products">
+                  <div class="mobile">
+                    <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_2].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="desktop" style="--bg-image: url('//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/grogu/231-Star-Wars-Grogu-Background.jpg');">
+                     <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_2].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <div class="product-img-wrapper">
+                            <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          </div>
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                     </div>
+                  </div>
+               </section>
+              {% endif %}
+
+              <section class="videoloop">
+                  <h2 id="ahsoka-tano" class="title" style="background: url(https://cdn.shopify.com/s/files/1/0373/4513/2676/files/AHSOKATANO-background-texture.png?v=1689999283); padding: 20px 0;">AHSOKA TANO COLLECTION</h2>
+               </section>
+               {% if section.settings.sw_md_collection_3 %}
+                <section class="products grogu_products" id="grogu_products">
+                  <div class="mobile">
+                    <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_3].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="desktop" style="--bg-image: url('//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/grogu/231-Star-Wars-Grogu-Background.jpg');">
+                     <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_3].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <div class="product-img-wrapper">
+                            <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          </div>
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                     </div>
+                  </div>
+               </section>
+              {% endif %}
+
+              <section class="videoloop">
+                  <h2 id="bounty-hunter" class="title" style="background: url(https://cdn.shopify.com/s/files/1/0373/4513/2676/files/BOUNTYHUNTER-background-texture.png?v=1689999283); padding: 20px 0;">BOUNTY HUNTER COLLECTION</h2>
+               </section>
+               {% if section.settings.sw_md_collection_4 %}
+                <section class="products grogu_products" id="grogu_products">
+                  <div class="mobile">
+                    <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_4].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="desktop" style="--bg-image: url('//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/grogu/231-Star-Wars-Grogu-Background.jpg');">
+                     <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_4].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <div class="product-img-wrapper">
+                            <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          </div>
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                     </div>
+                  </div>
+               </section>
+              {% endif %}
+
+              <section class="videoloop">
+                  <h2 id="essentials" class="title" style="background: url(https://cdn.shopify.com/s/files/1/0373/4513/2676/files/ESSENTIALS_TEXTURE.png?v=1689988327); padding: 20px 0;">ESSENTIALS COLLECTION</h2>
+               </section>
+               {% if section.settings.sw_md_collection_5 %}
+                <section class="products grogu_products" id="grogu_products">
+                  <div class="mobile">
+                    <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_5].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="desktop" style="--bg-image: url('//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/grogu/231-Star-Wars-Grogu-Background.jpg');">
+                     <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_5].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <div class="product-img-wrapper">
+                            <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          </div>
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                     </div>
+                  </div>
+               </section>
+              {% endif %}
+
+              <section class="videoloop">
+                  <h2 id="luke-skywalker" class="title" style="background: url(https://cdn.shopify.com/s/files/1/0373/4513/2676/files/LUKESKYWALKER-background-texture.png?v=1689999284); padding: 20px 0;">LUKE SKYWALKER COLLECTION</h2>
+               </section>
+               {% if section.settings.sw_md_collection_6 %}
+                <section class="products grogu_products" id="grogu_products">
+                  <div class="mobile">
+                    <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_6].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="desktop" style="--bg-image: url('//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/grogu/231-Star-Wars-Grogu-Background.jpg');">
+                     <div class="content-wrapper">
+                      {% for product in collections[section.settings.sw_md_collection_6].products %}
+                        <a href="{{ product.url }}" class="product" data-product-id="{{ product.id }}" aria-describedby="a11y-external-message">
+                          <div class="product-img-wrapper">
+                            <img class="product-img" src="{{ product.featured_image | img_url: 'master' }}" alt="product-img" loading="lazy">
+                          </div>
+                          <p class="product-name">{{ product.title }}</p>
+                          {% if product.compare_at_price_max > product.price %}
+                            <p class="product-price-discount">
+                              <del>{{ product.compare_at_price_max | money }}</del>
+                              <span class="discount-price">{{ product.price | money }}</span>
+                            </p>
+                          {% else %}
+                            <p class="product-price">{{ product.price | money }}</p>
+                          {% endif %}
+                          {% if product.available == false %}
+                            <img class="sold-out" src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/products/SOLD-OUT.png" alt="sold-out-tag" loading="lazy" style="display: inline;">
+                          {% endif %}
+                        </a>
+                      {% endfor %}
+                     </div>
+                  </div>
+               </section>
+              {% endif %}
+              
+            </div>
+            <!-- OCAPI -->
+            <script src="https://ssl.quiksilver.com/static/DC/default/category-assets/cat-experiences/global/js/ocapi.min.js"></script>
+            <!-- JS -->
+            <script src="https://ssl.quiksilver.com/static/DC/default/category-assets/modules/ux-menu/js/ux-menu.min.js"></script>
+            <!-- EShop Poppin -->
+            <script src="https://ssl.quiksilver.com/static/DC/default/category-assets/experiences/eshop_popin/js/eshop_popin.min.js"></script>
+            <!-- Swiper -->
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <script src="//ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/js/script.min.js"></script>
+
+            <script></script>
+         </div>
+      </div>
+   </div>
+</div>

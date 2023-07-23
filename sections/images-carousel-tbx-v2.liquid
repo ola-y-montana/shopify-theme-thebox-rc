@@ -1,0 +1,539 @@
+{% capture component_class %}images-carousel-tbx-v2_{{section.id}}{% endcapture %} 
+
+<style>
+  .{{ component_class }} {
+    font-family: roboto-bold,Arial,sans-serif;
+    margin: auto;
+	max-width: 100%;
+    {% if section.settings.width == blank or section.settings.full_width %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.width }};
+    {% endif %}
+    {% if section.settings.custom_top_spacing_mobile != blank %}
+    	margin-top: {{ section.settings.custom_top_spacing_mobile }};
+    {% endif %}
+    {% if section.settings.custom_bottom_spacing != blank %}
+    	margin-bottom: {{ section.settings.custom_bottom_spacing_mobile }};
+    {% endif %}
+  }
+  .{{ component_class }} .bg-panel {
+  	padding: 20px;
+    background: {{ section.settings.panel_bg_color }};
+    margin-bottom: 13px;
+    text-align: center;
+  }
+  .{{ component_class }} .main-title {
+    color: #000;
+    font-family: roboto-bold,Arial,sans-serif;
+    font-size: 28px;
+	font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .{{ component_class }} .see-more-button {
+    margin: auto;
+    text-align: center;
+	max-width: 100%;
+    width: 280px;
+	display: inline-block;
+  }
+  .{{ component_class }} .carousel-wrapper {
+    {% if section.settings.carousel_width == blank %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.carousel_width }};
+    {% endif %}
+	max-width: 87%;
+    margin: auto;
+  }
+  .{{ component_class }} .owl-carousel{
+    display: block !important;
+/*   	min-height: 160px; */
+  }
+  .{{ component_class }} .owl-carousel .owl-prev {
+    width: 33px;
+    height: 100px;
+    position: absolute;
+    top: 5%;
+    left: -20px;
+    margin-left: -20px;
+    display: block !important;
+    border:0px solid black;
+  }
+  .{{ component_class }} .owl-carousel .owl-next {
+      width: 33px;
+      height: 100px;
+      position: absolute;
+      top: 5%;
+      right: -54px;
+      display: block !important;
+      border:0px solid black;
+      transform: scaleX(-1);
+  }
+  .{{ component_class }} .owl-carousel .owl-prev i,
+  .{{ component_class }} .owl-carousel .owl-next i {
+    transform : scale(1,6); color: #ccc;
+  }
+  .{{ component_class }} .single-logo {
+	display: inline-block;
+    max-width: 100%;
+    margin-right: {{ section.settings.block_spacing }}px;
+    width: {{ 100 | divided_by: section.settings.blocks_shown_mobile }}%;
+  }
+  .{{ component_class }} .single-logo img {
+    {% if section.settings.block_width == blank %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.block_width }};
+    {% endif %}
+  }
+  .{{ component_class }} .owl-item .single-logo {
+    width: auto;
+    margin-right: initial;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .{{ component_class }} .owl-carousel .single-logo {
+    	width: 29%;
+    	margin-left: 0.5rem;
+        margin-right: 0;
+    	margin-bottom: 0.4rem;
+    }
+    .{{ component_class }} .single-logo.hide-xs {
+      display: none;
+  	}
+  }
+
+  @media screen and (min-width: 768px) {
+    .{{ component_class }} {
+      {% if section.settings.custom_top_spacing != blank %}
+    	margin-top: {{ section.settings.custom_top_spacing }};
+      {% endif %}
+   	  {% if section.settings.custom_bottom_spacing != blank %}
+          margin-bottom: {{ section.settings.custom_bottom_spacing }};
+      {% endif %}
+    }
+    .{{ component_class }} .main-title-wrapper {
+      margin-bottom: 40px;
+    }
+    .{{ component_class }} .owl-carousel {
+    	display: block !important;
+      	white-space: nowrap;
+    	overflow: hidden;
+    }
+    .{{ component_class }} .owl-carousel.owl-loaded {
+      	white-space: initial;
+    	overflow: initial;
+    }
+    .{{ component_class }} .single-logo {
+   		width: {{ 100 | divided_by: section.settings.blocks_shown }}%;
+    }
+    .{{ component_class }} .owl-carousel .owl-item .single-logo {
+    	width: auto;
+  	}
+  }
+  @media (max-width: 720px) {
+.images-carousel-tbx-v2_16363500065782b421 .single-logo img {
+    width: 177px;
+    height: 75px;
+}
+}
+</style>
+
+{% if section.settings.custom_css != blank %}
+{% assign component_selector = component_class | prepend: '.' %} 
+<style>
+	{{ section.settings.custom_css | replace: '$component_class', component_selector }}
+</style>
+{% endif %}
+
+<div class="{{ component_class }}" data-blocks-size="{{ section.blocks.size }}">
+  {% if section.settings.show_more_button != blank %}
+  	<div class="bg-panel">
+    {% if section.settings.title != blank %}<h1 class="main-title">{{ section.settings.title }}</h1>{% endif %}
+    {% if section.settings.show_more_button_image %}
+      <{% if section.settings.show_more_button_link != blank %}a{% else %}div{% endif %} class="see-more-button" {% if section.settings.show_more_button_link != blank %} href="{{ section.settings.show_more_button_link  }}"{% endif %}>
+        <img class="main-image" src="{{ section.settings.show_more_button_image | img_url: 'master' }}" width="250" height="45">
+      </{% if section.settings.show_more_button_link != blank %}a{% else %}div{% endif %}>
+    {% endif %}
+  	</div>
+  {% elsif section.settings.title != blank %}
+  <div class="main-title-wrapper">
+  	<h1 class="main-title">{{ section.settings.title }}</h1>
+  </div>
+  {% endif %} 
+
+  <div class="carousel-wrapper">
+  	<div class="section-padding owl-carousel">
+    {% for block in section.blocks %}
+    <div class="single-logo {% if forloop.index > section.settings.blocks_shown_mobile %}hide-xs{% endif %}">
+      {% if block.settings.link != blank %}
+      	<a href="{{ block.settings.link }}">
+      {% endif %}
+          <picture>
+            <source srcset="{{ block.settings.image | img_url: 'master' }} 575w 575h" media="(min-width: 725px)">
+            <source srcset="{{ block.settings.image_mobile | img_url: 'master' }} 300w 300h" media="(min-width: 0)">
+            <img loading="lazy" srcset="{{ block.settings.image_mobile | img_url: 'master' }} 300w 300h" width="auto">
+          </picture>
+      {% if block.settings.link != blank %}
+      	</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+</div>
+
+<script>
+  defer(function(){
+
+   var $carousel = null
+    
+   function toggleCarousel() {
+       {% if section.settings.mobile_carousel == blank %} 
+       if ($(window).width() > 767) {
+       {% endif %} 
+
+          {% capture arrow %}{%- include 'icon-chevron-left-alt' -%}{% endcapture %}
+
+          $carousel = $('.{{ component_class }} .owl-carousel').owlCarousel({
+              stagePadding: 0,
+              loop: true,
+              margin: parseInt('{{ section.settings.block_spacing }}'),
+              nav: {{ section.settings.show_arrows }}, // if there are no more items to show it will hide regardless
+              dots: {{ section.settings.show_dots }},
+              navText : ['{{ arrow | strip }}', '{{ arrow | strip }}'],
+              autoplay: {{ section.settings.autoplay }}, 
+              autoplayHoverPause: true,
+              autoplayTimeout: {{ 1000 | times: section.settings.autoplay_timeout  }},
+              responsive:{
+                  0:{
+                      items: {{ section.settings.blocks_shown_mobile }}
+                  },
+                  768:{
+                      items: {{ section.settings.blocks_shown }}
+                  },
+              }
+         })
+
+         {% if section.settings.show_arrows %}
+            $carousel.find('.owl-nav').removeClass('disabled')
+         {% endif %}
+                 
+       {% if section.settings.mobile_carousel == blank %} 
+        } else if ($carousel && $carousel.owlCarousel) {
+       		$carousel.owlCarousel('destroy')
+       }
+	   {% endif %}
+   }
+
+  toggleCarousel();
+
+  $(document).on('shopify:section:load', function(){
+      toggleCarousel();
+  });
+    
+    
+  {% if section.settings.mobile_carousel == blank %} 
+  $(window).on('resize', function() {
+    toggleCarousel();
+  });
+  {% endif %} 
+
+  }, function() { return window.jQuery && $() && $().owlCarousel })
+</script>
+
+{% if section.settings.custom_js != blank %}
+	<script>
+      function defer(method) {
+        if (window.jQuery) {
+          method();
+        } else {
+          setTimeout(function() { defer(method) }, 50);
+        }
+      }
+      defer(function(){
+        $(document).ready(function(){
+      		{{ section.settings.custom_js }}
+        })
+      })
+	</script>
+{% endif %}
+
+{% schema %}
+{
+"name": {
+  "en": "Images Carousel TBX v2",
+  "es": "Carrusel de Imágenes TBX v2"
+},
+"class": "thebox-section images-carousel-tbx-v2-wrapper",
+"settings": [
+  {
+    "type": "text",
+    "id": "title",
+    "label": {
+      "en": "Title",
+      "es": "Título"
+   }
+  },
+  {
+    "type": "checkbox",
+    "id": "show_more_button",
+	"label": "Botón Mostrar más",
+    "default": true
+  },
+  {
+  	"type": "image_picker",
+    "id": "show_more_button_image",
+    "label": "Imagen Botón Mostrar más"
+  },
+  {
+    "type": "url",
+    "id": "show_more_button_link",
+    "label": "Link Botón Mostrar más"
+  },
+  {
+    "type": "color",
+    "id": "panel_bg_color",
+    "label": "Color de Fondo de panel",
+    "default": "#f6f6f6"
+  },
+  {
+    "type": "header",
+      "content": "Carrusel"
+  },
+  {
+    "type": "checkbox",
+    "id": "mobile_carousel",
+    "label": {
+      "en": "Mobile Carousel",
+      "es": "Carrusel en Mobile"
+    },
+    "default": false
+  },
+  {
+    "type": "range",
+    "id": "blocks_shown",
+    "min": 3,
+    "max": 10,
+    "step": 1,
+    "label": "Bloques Mostrados Desktop",
+    "default": 8
+  },
+  {
+    "type": "range",
+    "id": "blocks_shown_mobile",
+    "min": 1,
+    "max": 10,
+    "step": 1,
+    "label": "Bloques Mostrados Mobile",
+    "default": 1
+  },
+  {
+    "type": "text",
+    "id": "block_width",
+    "label": {
+      "en": "Block Width",
+      "es": "Ancho del Bloque"
+   }
+  },
+  {
+    "type": "number",
+    "id": "block_spacing",
+    "label": {
+      "en": "Block Spacing",
+      "es": "Espaciado del Bloque"
+   },
+   "default": 18
+  },
+  {
+    "type": "text",
+    "id": "carousel_width",
+    "label": {
+      "en": "Carousel Width",
+      "es": "Ancho del Carrusel"
+   }
+  },
+  {
+    "type": "checkbox",
+    "id": "show_arrows",
+    "label": {
+      "en": "Show Arrows",
+      "es": "Mostrar flechas"
+    },
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_dots",
+    "label": {
+      "en": "Show Dots",
+      "es": "Mostrar Puntos"
+    },
+    "default": false
+  },
+  {
+    "type": "checkbox",
+    "id": "autoplay",
+    "label": {
+      "en": "Autoplay",
+      "es": "Autoplay"
+    },
+    "default": true
+  },
+  {
+    "type": "range",
+    "id": "autoplay_timeout",
+    "min": 1,
+    "max": 10,
+    "step": 1,
+    "label": "Segundos para autoplay",
+    "default": 5
+  },
+  {
+    "type": "header",
+      "content": "Dimensiones"
+  },
+  {
+    "type": "checkbox",
+    "id": "full_width",
+    "label": {
+      "en": "Full width",
+      "es": "Ancho completo"
+    },
+    "default": false
+  },
+  {
+    "type": "text",
+    "id": "width",
+    "label": {
+      "en": "Custom width",
+      "es": "Ancho personalizado"
+   }
+  },
+  {
+    "type": "text",
+    "id": "custom_height",
+    "label": {
+      "en": "Custom height",
+      "es": "Altura personalizada"
+   }
+  },
+  {
+    "type": "header",
+    "content": "Espaciado Desktop"
+  },
+  {
+    "type": "text",
+    "id": "custom_top_spacing",
+    "label": {
+      "en": "Custom top spacing",
+      "es": "Espaciado superior"
+   }
+  },
+  {
+    "type": "text",
+    "id": "custom_bottom_spacing",
+    "label": {
+      "en": "Custom bottom spacing",
+      "es": "Espaciado inferior"
+   }
+  },
+  {
+    "type": "header",
+    "content": "Espaciado Mobile"
+  },
+  {
+    "type": "text",
+    "id": "custom_top_spacing_mobile",
+    "label": {
+      "en": "Custom top spacing mobile",
+      "es": "Espaciado superior mobile"
+   }
+  },
+  {
+    "type": "text",
+    "id": "custom_bottom_spacing_mobile",
+    "label": {
+      "en": "Custom bottom spacing mobile",
+      "es": "Espaciado inferior mobile"
+   }
+  },
+  {
+    "type": "html",
+    "id": "custom_js",
+    "label": "Código JS personalizado"
+  },
+  {
+    "type": "html",
+    "id": "custom_css",
+    "label": "Código CSS personalizado"
+  }
+],
+"blocks": [
+  {
+    "type": "image",
+    "name": {
+      "en": "Image",
+      "es": "Imagen"
+    },
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": {
+          "en": "Image",
+          "es": "Imagen"
+        }
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": {
+          "en": "Mobile Image",
+          "es": "Imagen Mobile"
+        }
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": {
+          "en": "Link",
+          "es": "Enlace"
+        },
+        "info": {
+          "en": "Optional",
+          "es": "Opcional"
+        }
+      }
+    ]
+  }
+],
+"presets": [
+  {
+    "name": {
+      "en": "Images Carousel TBX v2",
+      "es": "Carrusel de Imágenes TBX v2"
+    },
+    "category": {
+      "en": "TheBox Theme v2",
+      "es": "TheBox Theme v2"
+    },
+    "blocks": [
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      }
+    ]
+  }
+]
+}
+{% endschema %}

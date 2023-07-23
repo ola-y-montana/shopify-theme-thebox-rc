@@ -1,0 +1,138 @@
+<style>
+  .size-guide .category {
+/*     padding-top: 4em; */
+    text-align: center;
+  }
+  .size-guide .category-item:not(:last-of-type) {
+    margin-bottom: 15px;
+  }
+  .size-guide .category-item .logo {
+	height: 125px;
+    width: auto;
+  }
+  .size-guide .category-item .title {
+    margin: 0;
+    margin-bottom: 0.9em;
+  }
+  .size-guide .category-item .description {
+    margin: 0.9em;
+  }
+  .size-guide .category-item .text {
+    margin: 0.9em;
+  }
+  .size-guide .table-label {
+    text-align: left;
+  }
+  .size-guide .table-wrapper {
+    max-width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .size-guide table th {
+      background: black;
+      color: white;
+  }
+  .size-guide th, .size-guide td {
+      text-align: center;
+  }
+  .size-guide a {
+    color: #000;
+    text-decoration: none;
+    background-color: transparent;
+  }
+  @media screen and (min-width: 768px) {
+    .size-guide h1 {
+      font-size: 2.2rem
+    }
+  }
+</style>
+
+{% assign size_guides = section.blocks | where: "type", "guide" | map: 'settings' %}
+
+<div class="size-guides-tables">
+	{% for size_guide in size_guides %}
+  	<div class="size-guide" 
+         data-tags="{{ size_guide.tags | downcase }}"
+         data-line="{{ size_guide.line | downcase }}"
+		 data-category="{{ size_guide.category | downcase }}"
+         data-gender="{{ size_guide.gender | downcase }}"
+		 data-brand="{{ size_guide.brand | downcase }}"
+       >
+      <div class="category">
+        <div class="content">
+          <div class="category-item">
+            <img class="logo" src="{{ size_guide.logo | img_url: 'master' }}">
+            <h3 class="title">{{ size_guide.title }}</h3>
+            <div class="table-wrapper">
+  				{{ size_guide.table }}
+  			</div>
+          </div>
+        </div>
+      </div>
+<!--   	  TAGS: {{ size_guide.tags }} -->
+    </div>
+  	{% endfor %}
+</div>
+
+{% schema %}
+{
+    "name":"Guias de Tallas",
+    "settings":[
+        
+    ],
+    "blocks":[
+        {
+            "type":"guide",
+            "name":"Guía de tallas",
+            "settings":[
+                {
+                    "id":"title",
+                    "type":"text",
+					"label": "Título"
+                },
+                {
+                    "id":"subtitle",
+                    "type":"text",
+					"label": "Subtitulo"
+                },
+                {
+                    "id":"table",
+                    "type":"html",
+					"label": "Tabla"
+                },
+                {
+                    "id":"line",
+                    "type":"text",
+					"label": "Línea"
+                },
+                {
+                    "id":"category",
+                    "type":"text",
+					"label": "Categoría"
+                },
+                {
+                    "id":"gender",
+                    "type":"text",
+					"label": "Género"
+                },
+                {
+                    "id":"brand",
+                    "type":"text",
+					"label": "Marca"
+                },
+                {
+                    "id":"logo",
+                    "type":"image_picker",
+					"label": "Logo"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

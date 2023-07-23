@@ -1,0 +1,50 @@
+{% comment %}
+    Renders a list of products from a collection
+
+    Accepts:
+    - column_image: {Image} Image to show in brand square (required)
+    - column_link: {Url} url for square ancor (required)
+    - column_label: {String} label string for square (optional)
+
+    Usage:
+    {% include 'collection-grid-item', column_image: block.settings.column_image, column_link: block.settings.column_link, %}
+{% endcomment %}
+
+<div class="collection-grid-item">
+  <a href="{% if column_link == empty %}#{% else %}{{ column_link }}{% endif %}" class="collection-grid-item__link">
+    {% unless column_image == blank %}
+      <div class="collection-grid-item__overlay box ratio-container lazyload js"
+        data-bgset="{% include 'bgset', image: column_image %}"
+        data-sizes="auto"
+        data-parent-fit="cover"
+        style="background-image: url('{{ column_image | img_url: '300x300' }}')">
+      </div>
+      {%- if column_label != blank -%}
+        <div class="text-center">
+          <p class="collection-grid-item__label column-label" style="display: inline-block;">
+            {{ column_label }}
+            <span class="collection-grid-item__label_icon column-label-icon t4 text-left" style="display: block; margin-top: 0px; font-size: 2.1rem;">⮕</span>
+          </p>
+        </div>
+      {%- endif -%}
+      <noscript>
+        <div class="collection-grid-item__overlay" style="background-image: url('{{ column_image | img_url: '1024x1024' }}')"></div>
+      </noscript>
+    {% else %}
+        <div class="collection-grid-item__overlay">
+          {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+    {% endunless %}
+
+    <div class="collection-grid-item__title-wrapper">
+      <!-- <div class="collection-grid-item__title h3">
+        {% if collection.title == blank %}
+          {{ 'homepage.onboarding.collection_title' | t }}
+        {% else %}
+          {{ collection.title }}
+        {% endif %}
+      </div> -->
+    </div>
+  </a>
+</div>

@@ -1,0 +1,383 @@
+{% capture component_class %}banner-counter-html-tbx-v2_{{section.id}}{% endcapture %} 
+{% assign end_date = section.settings.end_date %}
+{% assign current_date = 'now' | date: '%s' %}
+{% assign comparison_date = end_date | date: '%s' %}
+<style>
+  .{{ component_class }}  {
+    margin: auto;
+	max-width: 100%;
+    {% if section.settings.width == blank or section.settings.full_width %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.width }};
+    {% endif %}
+    {% if section.settings.custom_top_spacing_mobile != blank %}
+    	margin-top: {{ section.settings.custom_top_spacing_mobile }};
+    {% endif %}
+    {% if section.settings.custom_bottom_spacing_mobile != blank %}
+    	margin-bottom: {{ section.settings.custom_bottom_spacing_mobile }};
+    {% endif %}
+  }
+  .{{ component_class }} .banner-x {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-height: 140px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    
+    padding: 15px;
+  }
+  .{{ component_class }} .banner-x .banner-x-title {
+    font-family: roboto-bold,Arial,sans-serif;
+    width: 100%;
+    color: {{ section.settings.text_color }};
+    font-size: 17px;
+    font-weight: 800;
+  }
+  .{{ component_class }} .banner-x .banner-x-description {
+    width: 100%;
+    color: {{ section.settings.text_color_desc }}!important;
+    font-size: 11px;
+    margin: 10px auto;
+  }
+  .{{ component_class }} .banner-z .btn {
+    width: 340px;
+    padding: 12px 9px;
+    background: {{ section.settings.button_bg_color }}!important;
+    color: {{ section.settings.button_text_color }}!important;
+    font-size: 15px;
+    max-width: 70%;
+    font-weight: bold
+  }
+  .{{ component_class }} .banner-x .btn.disabled {
+    pointer-events: none;
+  }
+  @media only screen and (min-width: 768px) {
+    .{{ component_class }}  {
+      {% if section.settings.custom_top_spacing != blank %}
+      margin-top: {{ section.settings.custom_top_spacing }};
+      {% endif %}
+      {% if section.settings.custom_bottom_spacing != blank %}
+      margin-bottom: {{ section.settings.custom_bottom_spacing }};
+      {% endif %}
+    }
+    .{{ component_class }} .banner-x .banner-x-title {
+      font-size: 30px;
+      font-weight: 700;
+  	}
+    .{{ component_class }} .banner-x .banner-x-description {
+      font-size: 23px;
+      font-weight: 500;
+      color: #000;
+    }
+    .counter-mobile {
+    display: none;
+}
+  }
+
+  @media (max-width: 600px) {
+	.{{ component_class }}
+    {
+    display: block!important;
+    }
+    .{{ component_class }} .banner-x {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-height: 50px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    
+    padding: 0px;
+  }
+    .banner-z {
+    padding-bottom: 30px;
+    padding-top: 0px;
+    text-align: center;
+	}
+    a.btn.btn-primary {
+    font-size: 13px!important;
+	}
+    .counter-desktop {
+    display: none;
+}
+}
+  
+.{{ component_class }}
+  {
+    display: flex;
+    background: {{ section.settings.bg_color }};
+}
+  a.btn.btn-primary {
+    padding-left: 60px;
+    padding-right: 60px;
+    font-weight: 700!important;
+    background: #000;
+    font-size: 16px;
+}
+</style>
+
+{% if section.settings.custom_css != blank %}
+{% assign component_selector = component_class | prepend: '.' %} 
+<style>
+	{{ section.settings.custom_css | replace: '$component_class', component_selector }}
+</style>
+{% endif %}
+
+<div class="{{ component_class }}">
+    <div class="banner-x">
+      {% if section.settings.show_title != blank %}
+      	<div class="banner-x-title">{{ section.settings.title }}</div>
+      {% endif %}
+      {% if section.settings.show_description != blank %}
+      	<div class="banner-x-description">{{ section.settings.description }}</div>
+      {% endif %}
+      {% if section.settings.custom_html != blank %}
+  		{{ section.settings.custom_html }}
+  	  {% endif %}
+       <!--<span class="counter" style="
+            color: #000000;
+            background: #ffffff00;
+            font-size: 1.8em;
+            font-weight: 600;
+            min-width: 185px;
+        ">0DÍAS | 0H | 00M | 00S</span>-->
+
+    <div class="counter-desktop" style="width:100%; text-align:center;"><img src="https://www.powr.io/apps/34109385/countdown-gif" alt="Email Countdown from POWR.io" style="height:144px; width:540px;" height="144" width="540"/></div>  
+    </div>
+  <div class="counter-mobile" style="width:100%; text-align:center;"><img src="https://www.powr.io/apps/34109385/countdown-gif" alt="Email Countdown from POWR.io" style="height:70px; width:313px;" height="100" width="540"/></div>  
+    </div>
+    
+</div>
+
+<!--FIN SCRIPT COUNTADOR -->  
+{% if section.settings.custom_js != blank %}
+	<script>
+      function defer(method) {
+        if (window.jQuery) {
+          method();
+        } else {
+          setTimeout(function() { defer(method) }, 50);
+        }
+      }
+      defer(function(){
+        $(document).ready(function(){
+      		{{ section.settings.custom_js }}
+        })
+      })
+	</script>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Página Contador TBX v2",
+	"class": "thebox-section banner-page-counter-html-tbx-v2-wrapper",
+    "settings": [
+      {
+          "type": "text",
+          "id": "end_date",
+          "label": "Fecha final del contador",
+          "default": "2022-10-29 00:00:00",
+          "info": "ejemplo: 2022-10-29 00:00:00"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": {
+          "en": "Background Color",
+          "es": "Color de Fondo"
+       },
+        "default": "#FECFCA"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": {
+          "en": "Text Color",
+          "es": "Color de Text"
+       },
+        "default": "#000000"
+      },
+	{
+        "type": "color",
+        "id": "text_color_desc",
+        "label": {
+          "en": "Text Color Descripción",
+          "es": "Color de Text Description"
+       },
+        "default": "#000000"
+      },
+
+      {
+        "type": "color",
+        "id": "button_bg_color",
+        "label": {
+          "en": "Button Background Color",
+          "es": "Color de Fondo de Botón"
+       },
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": {
+          "en": "Button Text Color",
+          "es": "Color de Texto de Botón"
+       },
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": {
+          "en": "Show Title",
+          "es": "Mostrar Título"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": {
+          "en": "Title",
+          "es": "Título"
+       },
+	   "default": "Este es el título"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": {
+          "en": "Show description",
+          "es": "Mostrar Descripción"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": {
+          "en": "Description",
+          "es": "Descripción"
+       },
+	   "default": "Este es un texto de descripción para tu sección"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_button",
+        "label": {
+          "en": "Show Button",
+          "es": "Mostrar Botón"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": {
+          "en": "Button label",
+          "es": "Texto del botón"
+       },
+	   "default": "Comprar Ahora"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": {
+          "en": "Link",
+          "es": "Enlace"
+        }
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": {
+          "en": "Full width",
+          "es": "Ancho completo"
+        },
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "width",
+        "label": {
+          "en": "Custom width",
+          "es": "Ancho personalizado"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_height",
+        "label": {
+          "en": "Custom height",
+          "es": "Altura personalizada"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing",
+        "label": {
+          "en": "Custom top spacing",
+          "es": "Espaciado superior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing",
+        "label": {
+          "en": "Custom bottom spacing",
+          "es": "Espaciado inferior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing_mobile",
+        "label": {
+          "en": "Custom top spacing mobile",
+          "es": "Espaciado superior mobile"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing_mobile",
+        "label": {
+          "en": "Custom bottom spacing mobile",
+          "es": "Espaciado inferior mobile"
+       }
+      },
+      {
+        "type": "html",
+        "id": "custom_js",
+        "label": "Código JS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_css",
+        "label": "Código CSS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_html",
+        "label": "Plantilla HTML personalizada"
+      }
+	],
+    "presets": [
+      {
+        "name": {
+            "en": "Banner HTML TBX v2",
+            "es": "Banner HTML TBX v2"
+        },
+        "category": {
+          "en": "TheBox Theme v2",
+          "es": "TheBox Theme v2"
+        }
+      }
+    ]
+}
+{% endschema %}
+

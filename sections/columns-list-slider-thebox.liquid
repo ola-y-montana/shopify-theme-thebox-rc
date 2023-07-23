@@ -1,0 +1,425 @@
+{%- if section.settings.cl_thebox_active -%}
+
+<style>
+  .columns-list-slider-thebox {
+    padding-left: 1px;
+    padding-right: 1px;
+    max-width: 100%;
+    margin-top: 40px !important;
+    margin-bottom: 40px; 
+  }
+  .columns-list-slider-thebox .grid-item-thebox {
+    padding-left: 0px;
+    /* width: 249px !important; */
+  }
+  .columns-list-slider-thebox .collection-grid {
+    position: relative;
+	overflow: initial;
+    padding-bottom: initial;
+  }
+  .columns-list-slider-thebox .collection-grid .side-arrow {
+    position: absolute;
+    z-index: 999;
+    top: 38%;
+    height: 40px;
+    width: 40px; 
+    cursor: pointer;
+  }
+  .columns-list-slider-thebox .collection-grid .side-arrow.square {
+    background: #e6e6e6;
+    padding: 9px 5px;
+  }
+  .columns-list-slider-thebox .collection-grid .side-arrow.square.side-arrow-right {
+    background: #e6e6e6;
+    padding: 9px;
+  }
+  .columns-list-slider-thebox .collection-grid .side-arrow.side-arrow-left {
+    left: 0;
+  }
+  .columns-list-slider-thebox .collection-grid .side-arrow.side-arrow-right {
+    right: 0;
+  }
+  .columns-list-slider-thebox .collection-grid .side-arrow svg {
+    cursor: pointer; 
+    height: 20px;
+    width: 24px;
+  }
+  .columns-list-slider-thebox .collection-grid-item {
+    margin-bottom: 48px;
+    height: 400px;
+  }
+  .columns-list-slider-thebox .columns-list-grid-thebox {
+    margin: 0 15px 0 7px;
+  }
+  .columns-list-slider-thebox .section-header {
+    margin: 20px;
+  }
+  .columns-list-slider-thebox .section-header h2 {
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 0px;
+  }
+  .columns-list-slider-thebox.full-size .grid-item-thebox {
+    padding-left: 0px;
+  }
+  .columns-list-slider-thebox.full-size .collection-grid-item {
+    margin-bottom: 0px;
+  }
+  .columns-list-slider-thebox .column-label {
+    margin-top: 10px;
+    /* font-size: 0.78rem; */
+    font-size: 1.05rem;
+    font-weight: lighter;
+    display: inline-block;
+  }
+  .columns-list-slider-thebox .column-label-icon {
+    font-size: 1.5rem;
+    padding: 0;
+    line-height: 0.88rem;
+  }
+  .columns-list-slider-thebox .slider-thebox {
+    position: relative;
+  }
+  @media only screen and (min-width: 749px) {
+    .columns-list-slider-thebox {
+      margin-bottom: 100px;
+    }
+    .columns-list-slider-thebox .collection-grid-item {
+		margin-bottom: 48px;
+    }
+    .columns-list-slider-thebox .grid__item.grid-item-thebox  {
+    	height: 460px;
+        padding-left: 0;
+        max-width: 50%;
+  	}
+    .columns-list-slider-thebox .grid-item-thebox, .columns-list-slider-thebox .grid-item-thebox .collection-grid-item__link {
+      height: 460px;
+    }
+    .columns-list-slider-thebox .collection-grid .side-arrow {
+      display: none !important;
+    }
+    .columns-list-slider-thebox .columns-list-grid-thebox {
+      margin: 25px 25px;
+      margin-left: 17px;
+    }
+    .columns-list-slider-thebox.full-size .columns-list-grid-thebox {
+      margin-left: 25px;
+    }
+    .columns-list-slider-thebox .column-label {
+      font-size: 1.3rem;
+    }
+  }
+  @media only screen and (min-width: 960px) {
+    .columns-list-slider-thebox .collection-grid-item {
+        margin-left: 6px;
+    }
+    .columns-list-slider-thebox .grid__item.grid-item-thebox {
+    	height: 460px;
+    	width: 874px;
+    	max-width: 50%;
+	}
+  }
+  @media only screen and (min-width: 1800px) {
+    .columns-list-slider-thebox .collection-grid-item {
+        margin-left: 7%;
+    }
+  }
+</style>
+
+<div class="columns-list-slider-thebox page-width {% if section.settings.full_size %} full-size {% endif %}">
+  {% if section.settings.show_title != blank and section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {% if section.blocks.size > 1 and section.blocks.size < 6 %}
+    {% assign grid = section.blocks.size %}
+  {% else %}
+    {% assign grid = 4 %}
+  {% endif %}
+  {% case grid %}
+    {% when 2 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-half' -%}
+    {% when 3 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+    {% when 4 %}
+      {%- assign grid_item_wP´Kdth = 'small--one-half medium-up--one-quarter' -%}
+    {% when 5 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
+  {% endcase %}
+
+  {% comment %}
+    {% if block.settings.column_label != blank %}
+      {% capture column_label %}
+        <p class="column-label text-center">
+          {{ block.settings.column_label }}
+          <br>⮕
+        </p>
+      {% endcapture %}
+    {% endif %} 
+  {% endcomment %}
+  
+  <div class="collection-grid slideshow-wrapper">
+    <ul class="grid grid--uniform columns-list-grid-thebox">
+      {% for block in section.blocks limit: section.blocks.size %}
+        <li class="grid__item grid-item-thebox {{ grid_item_width }}" {{ block.shopify_attributes }}>
+          {% assign column_image = block.settings.column_image | img_url: '1024x1024' %}
+          {% include 'column-grid-item-thebox', column_image: block.settings.column_image , column_link: block.settings.column_link , column_label: block.settings.column_label  %}
+        </li>
+      {% endfor %}
+    </ul>
+    <span class="slideshow__arrow slideshow__arrow-left side-arrow side-arrow-left square">
+        {% include 'icon-chevron-left-alt' %}
+    </span>
+    <ul class="grid grid--uniform columns-list-grid-thebox mobile slider-thebox" data-adapt-height="true" data-side-arrows="true">
+      {% for block in section.blocks limit: section.blocks.size %}
+        <li class="grid__item grid-item-thebox" {{ block.shopify_attributes }}>
+          {% assign column_image = block.settings.column_image_mobile | img_url: '1024x1024' %}
+          {% include 'column-grid-item-thebox', column_image: block.settings.column_image_mobile , column_link: block.settings.column_link_mobile , column_label: block.settings.column_label  %}
+        </li>
+      {% endfor %}
+    </ul>
+    <span class="slideshow__arrow slideshow__arrow-right side-arrow side-arrow-right square">
+      {% include 'icon-chevron-right-alt' %}
+    </span>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+
+  {% unless section.blocks.size == 0 %}
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <hr class="hr--invisible" aria-hidden="true" style="margin-top: 0; margin-bottom: 50px;"/>
+      <div class="text-center">
+        <a href="{{ section.settings.button_link }}" class="btn" aria-label="{{ section.settings.button_label }}">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {% endif %}
+  {% endunless %}
+</div>
+
+{%- endif -%}
+
+{% stylesheet 'scss' %}
+  .grid--uniform.columns-list-grid-thebox {
+    display: none;
+    &.mobile {
+      display: block;
+    }
+    @media (min-width: 768px){
+      display: block;
+      &.mobile {
+        display: none;
+      }
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+
+  var $sliderSelector = $('.slider-thebox');
+  var $sliderContainer = $sliderSelector.closest('.slideshow-wrapper')
+
+  /* Slider settings */
+  var settings = {
+    accessibility: true,
+    arrows: false,
+    dots: false,
+    fade: true,
+    draggable: true,
+    touchThreshold: 20,
+    centerMode: true,
+    centerPadding: '40px',
+    slidesToShow: 1,
+    mobileFirst: true,
+    responsive: [{
+      breakpoint: 767,
+      settings: "unslick"
+    }]
+  }
+
+  // data options
+  settings.autoplay = $sliderSelector.data('autorotate');
+  settings.autoplaySpeed = $sliderSelector.data('speed');
+
+  var adaptHeight = $sliderSelector.data('adapt-height');
+  var minAspectRatio = $sliderSelector.data('min-aspect-ratio');
+  var sideArrows = $sliderSelector.data('side-arrows');
+  
+  if (adaptHeight) {
+    $sliderSelector.height($(document).width() / minAspectRatio);
+    $(window).resize($.debounce(50, function() {
+      $sliderSelector.height($(document).width() / minAspectRatio);
+    }));
+  }
+  
+  var slider = $sliderSelector.slick(settings);
+
+  var $prevArrow = $sliderContainer.find('.side-arrow.side-arrow-left')
+  var $nextArrow = $sliderContainer.find('.side-arrow.side-arrow-right')
+
+  if (sideArrows && $sliderSelector.hasClass('slick-initialized')) {
+    if ($prevArrow && $prevArrow.length) {
+      $prevArrow.on('click', function() {
+        $sliderSelector.slick('slickPrev');
+      });
+    }
+    if ($nextArrow && $nextArrow.length) {
+      $nextArrow.on('click', function() {
+        $sliderSelector.slick('slickNext');
+      });
+    }
+  }
+
+  /* Do this every time window gets resized */
+  $(window).on('resize', function() {
+    if ($(window).width() < 767) {
+    /* We are below mobile breakpoint, initialize the slider
+      if it is not already initialized */
+    if (!slider.hasClass('slick-initialized')){
+        return slider.slick(settings);
+      }
+    }
+  })
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": {
+    "en": "Columns Slider TheBox",
+    "es": "Slider de columnas TheBox"
+  },
+  "class": "thebox-section columns-list-slider-thebox",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "cl_thebox_active",
+      "label": {
+        "en": "Active",
+        "es": "Activo"
+      },
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "full_size",
+      "label": {
+        "en": "Spaceless columns",
+        "es": "Columnas sin espacios"
+      },
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": {
+        "en": "Heading",
+        "es": "Título"
+      }
+    },
+	{
+      "type": "checkbox",
+      "id": "show_title",
+      "label": {
+        "en": "Show Title",
+        "es": "Mostrar Título"
+      },
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": {
+        "en": "Button label",
+        "es": "Etiqueta de botón"
+      }
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": {
+        "en": "Button Link",
+        "es": "Enlace de Botón"
+      }
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": {
+        "en": "Column",
+        "es": "Columna"
+      },
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "column_image",
+          "label": {
+            "en": "Image Desktop",
+            "es": "Imagen Desktop"
+          }
+        },
+        {
+          "type": "image_picker",
+          "id": "column_image_mobile",
+          "label": {
+            "en": "Mobile Image",
+            "es": "Imagen Mobile"
+          }
+        },
+        {
+          "type": "url",
+          "id": "column_link",
+          "label": {
+            "en": "Desktop Link",
+            "es": "Enlace Desktop"
+          }
+        },
+        {
+          "type": "url",
+          "id": "column_link_mobile",
+          "label": {
+            "en": "Mobile Link",
+            "es": "Enlace Mobile"
+          }
+        },
+        {
+          "type": "text",
+          "id": "column_label",
+          "label": {
+            "en": "Column label",
+            "es": "Etiqueta Columna"
+          }
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Columns Slider TheBox",
+        "es": "Slider de columnas TheBox"
+      },
+      "category": {
+        "en": "TheBox Theme",
+        "es": "TheBox Theme"
+      },
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

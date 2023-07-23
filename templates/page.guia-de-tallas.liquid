@@ -1,0 +1,26 @@
+<style>
+  @media screen and (max-width: 767px) {
+  	.main-content {
+      padding-top: 10px;
+    }
+  } 
+  @media screen and (min-width: 768px) {
+  	.content-wrapper {
+      margin-left: 25%;
+    }
+  }
+  .page.size-guides {
+    padding-top: 50px;
+}
+</style>
+
+<div class="page size-guides">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      {% section 'size-guides-filter' %}
+      <div class="content-wrapper">
+         {% section 'size-guides' %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<style>
+  .landing-star-wars h2 {
+    font-weight: 500 !important;
+    font-size: 1.3rem !important;
+  }
+  .landing-star-wars .slideshow__image, .landing-star-wars .see-more-button {
+    cursor: pointer;
+  }
+  @media screen and (min-width: 768px) {
+    .landing-star-wars h2 {
+      font-size: 28px !important;
+      margin-bottom: 25px !important;
+    }
+  }
+  span.slideshow__arrow.slideshow__arrow-right.side-arrow.side-arrow-right {
+    display: none;
+}
+  span.slideshow__arrow.slideshow__arrow-left.side-arrow.side-arrow-left {
+    display: none;
+}
+ @media screen and (min-width: 768px){
+.filters-toolbar-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 50px!important;
+}
+ }
+.collection-template {
+    padding-top: 80px;
+}
+  @media (max-width: 600px) {
+  div#Slideshow-slideshow-tbx-v2 {
+    height: auto!important;
+}
+    .collection-template {
+    padding-top: 60px;
+}
+  }
+  .video-thebox.video-thebox-9dd5d9e3-d2cd-44aa-8730-50d05a00374d.video-thebox-fullwidth {
+    cursor: url(https://ssl.quiksilver.com/static/DC/default/category-assets/experiences/2022/starwars/img/logos/tiefighter.png),auto;
+}
+</style>
+
+<div class="page landing landing-star-wars">
+
+  
+  {% section 'slideshow-tbx-v2' %}
+  {% comment %}{% section 'products-carousel-fix' %}{% endcomment %}
+  {% comment %]{% section 'title-description-image-tbx-v2' %}{% endcomment %}
+  {% comment %}{% section 'instafeed' %}{% endcomment %}
+</div>
+
+
+<script>  
+  window.addEventListener('DOMContentLoaded', (event) => {
+    var containerEl = document.querySelector('.landing-star-wars')
+    var scrollTriggersEls = containerEl.querySelectorAll(".slideshow__image, .see-more-button")
+
+    var collectionTargetEl = document.querySelector(".collection-custom-title-wrapper-desktop")
+    var url = new URL(window.location.href);
+
+    if (url.searchParams.get('pf_t_categorias')) {
+      collectionTargetEl.scrollIntoView({ block: "start", behavior: 'smooth' })
+    }
+
+    scrollTriggersEls.forEach(element => {
+      element.addEventListener('click', function(e) {
+        collectionTargetEl.scrollIntoView({ block: "start", behavior: 'smooth' })
+      })
+    });
+  });
+</script>
+
+{% section 'collection-template' %}

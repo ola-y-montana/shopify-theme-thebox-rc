@@ -1,0 +1,442 @@
+<style>
+    .page.size-guides {
+      padding-top: 0;
+    }
+    .size-guides-filter .boost-pfs-filter-option-content .boost-pfs-filter-option-item-list.boost-pfs-filter-option-item-list-multiple-list li {
+        padding-left: 0px;
+    }
+    .size-guides-filter .checkbox {
+      /*display: grid;*/
+      grid-template-columns: -webkit-min-content auto;
+      grid-template-columns: min-content auto;
+      grid-gap: 0.5em;
+  /*     font-size: 2rem; */
+      color: var(--color);
+      font-weight: bold !important;
+    }
+    .boost-pfs-filter-option-item .amount {
+      margin-left: 3px;
+      float: right;
+      opacity: .6;
+    }
+    .size-guides-filter .checkbox--disabled {
+      color: var(--disabled);
+    }
+  
+    .size-guides-filter .checkbox__control {
+      display: inline-grid;
+      width: 1em;
+      height: 1em;
+      border-radius: 0.25em;
+      border: 0.1em solid currentColor;
+    }
+    .size-guides-filter .checkbox__control svg {
+      transition: transform 0.1s ease-in 25ms;
+      transform: scale(0);
+      transform-origin: bottom left;
+    }
+  
+    .size-guides-filter .checkbox__input {
+  /*     display: grid; */
+  /*     grid-template-areas: "checkbox"; */
+      margin-right: 7px;
+    }
+    .size-guides-filter .checkbox__input > * {
+      grid-area: checkbox;
+    }
+    .size-guides-filter .checkbox__input input {
+      opacity: 0;
+      width: 0.1em;
+      height: 0.1em;
+    }
+    .size-guides-filter .checkbox__input input:focus + .checkbox__control {
+      box-shadow: 0 0 0 0.05em #fff, 0 0 0.15em 0.1em currentColor;
+    }
+    .size-guides-filter .checkbox__input input:checked + .checkbox__control svg {
+      transform: scale(1);
+    }
+    .size-guides-filter .checkbox__input input:disabled + .checkbox__control {
+      color: var(--disabled);
+    }
+
+    .size-guides .mobile-filter-toggle {
+      width: 100%;
+      background: #000;
+      color: #fff;
+      padding: 10px 0;
+      margin: 20px 0;
+      border: none;
+      text-transform: uppercase;
+      font-size: 14px;
+      cursor: pointer;
+      display: block;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    .mobile {
+      display: block;
+    }
+  
+    .size-guides-filter .tabs {
+      /**
+       * Setting display to flex makes this container lay
+       * out its children using flexbox, the exact same
+       * as in the above "Stepper input" example.
+       */
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #D7DBDD;
+      border-top: 1px solid #D7DBDD;
+      flex-wrap: wrap;
+    }
+  
+    .size-guides-filter .tab {
+      cursor: pointer;
+      padding: 5px 30px;
+      color: #4D4D4D;
+      font-size: 15px;
+      text-align: center;
+      text-transform: uppercase;
+      border-bottom: 2px solid transparent;
+    }
+  
+    .size-guides-filter .tab.is-tab-selected {
+      border-bottom-color: #4EBBE4;
+    }
+    
+    .size-guides-filter .boost-pfs-filter-tree-mobile-button {
+      width: 90%;
+      margin: 18px auto;
+    }
+    
+    .size-guides-filter .boost-pfs-filter-tree-mobile-style2.boost-pfs-filter-tree-v .boost-pfs-filter-option .boost-pfs-filter-option-title .boost-pfs-filter-option-title-heading:after {
+      -ms-transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  
+  label {
+    display: -webkit-inline-box;
+    margin-bottom: 10px;
+}
+  span.boost-pfs-filter-option-title-text {
+    font-size: 15px;
+}
+    
+.title-sizes-guide h1, .h1 {
+    font-weight: 700;
+}
+
+  @media screen and (min-width: 768px) {
+    .size-guides .mobile-filter-toggle {
+      display: none;
+    }
+    .mobile {
+      display: none;
+    }
+    .page.size-guides {
+      padding-top: 50px;
+    }
+  }
+  </style>
+  
+  
+  <div class="size-guides-filter">
+    <div class="boost-pfs-filter-wrapper">
+       <div class="boost-pfs-filter-tree boost-pfs-filter-tree-v boost-pfs-filter-tree-mobile-style2 boost-pfs-filter-tree-mobile-full-width" id="boost-pfs-filter-tree">
+          <div class="boost-pfs-filter-tree-content" aria-live="polite" role="navigation" aria-label="Product filter">
+             <div class="boost-pfs-filter-mobile-toolbar">
+                <div class="boost-pfs-filter-mobile-toolbar-top">
+                   <!--<a href="javascript:;" class="boost-pfs-filter-close"><span>Cerrar</span></a>-->
+                </div>
+                <div class="boost-pfs-filter-mobile-toolbar-items">
+                   <div class="boost-pfs-filter-mobile-toolbar-left">
+                      <a href="javascript:;" class="boost-pfs-filter-back-btn"></a>
+                   </div>
+                   <!--<div class="boost-pfs-filter-mobile-toolbar-middle">Filtrar por</div>-->
+                   <div class="boost-pfs-filter-mobile-toolbar-right">
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-clear-all" style="display: none;">Borrar Todos los Filtros</button> -->
+                   </div>
+                </div>
+             </div>
+             <div class="boost-pfs-filter-refine-by-wrapper"></div>
+             <div class="boost-pfs-filter-options-wrapper">
+                <div class="boost-pfs-filter-option boost-pfs-filter-option-list boost-pfs-filter-option-linea boost-pfs-filter-has-scrollbar boost-pfs-filter-option-column-1" data-filter="line">
+                   <div class="boost-pfs-filter-option-title">
+                     <div class="title-sizes-guide">
+                       <h1>GUIA DE TALLAS</h1>
+                     </div>
+                      <div tabindex="0" class="boost-pfs-filter-button boost-pfs-filter-option-title-heading">
+                      <span class="boost-pfs-filter-option-title-text">
+                      CATEGORÍA
+                      <span class="boost-pfs-filter-option-title-count"></span>
+                      </span>
+                        <br><br>
+                      </div>
+                      <p class="boost-pfs-filter-selected-items-mobile"></p>
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-clear" style="display: none;">Borrar Filtros</button> -->
+                   </div>
+                   <div class="boost-pfs-filter-option-content">
+                      <div class="boost-pfs-filter-option-content-inner" data-simplebar>
+                          <ul class="boost-pfs-filter-option-item-list boost-pfs-filter-option-item-list-multiple-list"></ul>
+                      </div>
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-apply-button">Aplicar</button> -->
+                   </div>
+                </div>
+                <div class="boost-pfs-filter-option boost-pfs-filter-option-list boost-pfs-filter-option-genero boost-pfs-filter-has-scrollbar boost-pfs-filter-option-column-1" data-filter="gender">
+                   <div class="boost-pfs-filter-option-title">
+                      <div tabindex="0" class="boost-pfs-filter-button boost-pfs-filter-option-title-heading">
+                      <br><br>
+                      <span class="boost-pfs-filter-option-title-text">
+                      GÉNERO
+                      <span class="boost-pfs-filter-option-title-count"></span>
+                      </span>
+                        <br><br>
+                      </div>
+                      <p class="boost-pfs-filter-selected-items-mobile"></p>
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-clear" style="display: none;">Borrar Filtros</button> -->
+                   </div>
+                   <div class="boost-pfs-filter-option-content">
+                      <div class="boost-pfs-filter-option-content-inner" data-simplebar>
+                        <ul class="boost-pfs-filter-option-item-list boost-pfs-filter-option-item-list-multiple-list"></ul>
+                      </div>
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-apply-button">Aplicar</button> -->
+                   </div>
+                </div>
+                <div class="boost-pfs-filter-option boost-pfs-filter-option-list boost-pfs-filter-option-marca boost-pfs-filter-has-scrollbar boost-pfs-filter-option-column-1" data-filter="brand">
+                   <div class="boost-pfs-filter-option-title">
+                      <div tabindex="0" class="boost-pfs-filter-button boost-pfs-filter-option-title-heading">
+                      <br><br>
+                      <span class="boost-pfs-filter-option-title-text">
+                      Marca
+                      <span class="boost-pfs-filter-option-title-count"></span>
+                      </span>
+                        <br><br>
+                      </div>
+                      <p class="boost-pfs-filter-selected-items-mobile"></p>
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-clear" style="display: none;">Borrar Filtros</button> -->
+                   </div>
+                   <div class="boost-pfs-filter-option-content">
+                      <div class="boost-pfs-filter-option-content-inner" data-simplebar>
+                        <ul class="boost-pfs-filter-option-item-list boost-pfs-filter-option-item-list-multiple-list"></ul>
+                      </div>
+                      <!-- <button class="boost-pfs-filter-button boost-pfs-filter-apply-button">Aplicar</button> -->
+                   </div>
+                </div>
+             </div>
+             <div class="boost-pfs-filter-mobile-footer">
+                <!-- <button class="boost-pfs-filter-show-result" type="button">Mostrar resultados</button> -->
+                <!-- <button class="boost-pfs-filter-button boost-pfs-filter-apply-all-button">Apply All</button> -->
+             </div>
+          </div>
+       </div>
+    </div>
+  <!--   <div class="tabs size-guides-filter filter-line">
+      <div class="tab is-tab-selected" data-value="poleras">Poleras</div>
+      <div class="tab" data-value="casacas">Casacas</div>
+      <div class="tab" data-value="joggers">Joggers</div>
+      <div class="tab" data-value="tanks">Tanks</div>
+      <div class="tab" data-value="ropas">Ropas</div>
+      <div class="tab" data-value="calzado">Calzado</div>
+      <div class="tab" data-value="pantalones">Pantalones</div>
+      <div class="tab" data-value="polos">Polos</div>
+      <div class="tab" data-value="wetsuit">WETSUIT</div>
+      <div class="tab" data-value="vestidos">Vestidos</div>
+      <div class="tab" data-value="faldas">Faldas</div>
+      <div class="tab" data-value="lycras">Lycras</div>
+    </div> -->
+
+    <div class="page-width mobile">
+      <button class="mobile-filter-toggle" type="button" aria-label="Filtrar por">Filtrar por</button>
+    </div>
+    <div class="tabs size-guides-filter filter-top" data-filter="category">
+      <div class="tab is-tab-selected" data-value="ropa">ROPA</div>
+      <div class="tab" data-value="calzado">CALZADO</div>
+      <div class="tab" data-value="accesorios">ACCESORIOS</div>
+    </div>
+    <!--<div class="boost-pfs-filter-tree-mobile-button"><button type="button">Filtrar por</button></div>-->
+  </div>  
+  
+  {% schema %}
+  {
+  "name": "Filtros Guía de Tallas",
+  "settings": []
+  }
+  {% endschema %}
+  
+  
+  
+  <script>
+   function defer(method, validation) {
+      if (validation()) {
+        method();
+      } else {
+        setTimeout(function() { defer(method, validation) }, 50);
+      }
+   }
+  </script>
+  
+  <script>
+  defer(function(){
+  
+    var $tabs = $('.tabs .tab');
+    
+    var currentFilters = [];
+    
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    function toggleArrayItem(a, v) {
+        var i = a.indexOf(v);
+        if (i === -1)
+            a.push(v);
+        else
+            a.splice(i,1);
+    }
+    
+    function toggleFilter(name, value) {
+        var existingFilterIdx = currentFilters.findIndex(filterEntry => filterEntry.name === name)
+      
+      if (existingFilterIdx > -1) {
+          var existingValueIdx = currentFilters[existingFilterIdx].values.findIndex(v => v === value)
+          if (existingValueIdx > -1) {
+              currentFilters[existingFilterIdx].values.splice(existingValueIdx, 1)
+              if (!currentFilters[existingFilterIdx].values.length) {
+                  currentFilters.splice(existingFilterIdx, 1)
+              }
+          } else {
+              currentFilters[existingFilterIdx].values.push(value)
+          }
+      } else {
+        currentFilters.push({ name: name, values: [value] })
+      }
+    }
+    
+    function clearFilters() {
+        currentFilters =  []
+    }
+    
+    function toggleTables() {
+      var $tables = $('.size-guides-tables .size-guide')
+      
+      $tables.hide();
+      
+      var lastFilterType = ''
+      var $matchedTables = $tables
+  
+      currentFilters.forEach(function(filter) {
+        var tablesSelector = ''
+        filter.values.forEach(function(value) {
+               tablesSelector += '[data-'+ filter.name + '="' + value + '"],'
+        })
+                              
+        tablesSelector = tablesSelector.replace(/,([^,]*)$/, '$1')
+        
+        $matchedTables = $matchedTables.filter(tablesSelector)
+      })
+                  
+      if ($matchedTables.length){
+        $matchedTables.show();
+      } else {   
+          $tables.hide();
+      }
+    }
+  
+    function buildFilterOptions() {
+      
+        var $selectedOption = $('.size-guides-filter.filter-top .is-tab-selected')
+        var selectedOptionType = $selectedOption.closest('[data-filter]').data('filter')
+        var selectedValue = $selectedOption.data('value')
+              
+        var $filtersOptionsList = $('.boost-pfs-filter-option.boost-pfs-filter-option-list')
+        var $sizeGuides = $('.size-guides-tables .size-guide[data-'+ selectedOptionType +'="'+ selectedValue +'"]')
+        
+        var $tables = $('.size-guides-tables .size-guide')
+        
+        
+        console.log($selectedOption, selectedOptionType, selectedValue, $filtersOptionsList, $sizeGuides)
+  
+        $filtersOptionsList.find('.boost-pfs-filter-option-item-list').each(function(i) { $(this).empty() })
+        
+        $tables.hide();
+  
+        $sizeGuides.each(function(i) {
+          var $sizeGuide = $(this)
+          var line = $sizeGuide.data('line')
+          var gender = $sizeGuide.data('gender')
+          var brand = $sizeGuide.data('brand')
+                 
+          var filterAttrs = [
+            {name: 'line', value: line }, 
+            {name: 'gender', value: gender }, 
+            {name: 'brand', value: brand }
+          ]
+          
+          filterAttrs.forEach(function(item) {
+              var $filter = $('.boost-pfs-filter-option[data-filter="'+ item.name +'"]')
+              var $filterOptionList = $filter.find('.boost-pfs-filter-option-item-list')
+              var filterOption = $filter.find('[data-value="'+ item.value +'"]')
+                          
+              if (filterOption.length) {
+                  var $filterOptionAmount = filterOption.find('.amount .number')
+                  var filterResultsAmount = $filterOptionAmount.text(Number($filterOptionAmount.text()) + 1)
+                  return
+              }
+                        
+              var newFilterOption = ''
+              
+              newFilterOption += '<li class="boost-pfs-filter-option-item boost-pfs-filter-option-label" data-value="' + item.value + '">'
+              newFilterOption +=    '<label class="checkbox">'
+              newFilterOption +=      '<span class="checkbox__input">'
+              newFilterOption +=        '<input type="checkbox" name="checkbox">'
+              newFilterOption +=        '<span class="checkbox__control">'
+              newFilterOption +=          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+              newFilterOption +=            '<path fill="none" stroke="currentColor" stroke-width="3" d="M1.73 12.91l6.37 6.37L22.79 4.59" /></svg>'
+              newFilterOption +=        '</span>'
+              newFilterOption +=      '</span>'
+              newFilterOption +=      '<span class="radio__label">' + capitalizeFirstLetter(item.value) + '</span>'
+              newFilterOption +=    '</label>'
+              newFilterOption +=    '<span class="amount">(<span class="number">1</span>)</span>'	
+              newFilterOption +=    '</li>'
+              
+              $filterOptionList.append(newFilterOption)
+          })
+        })
+        
+        toggleFilter(selectedOptionType, selectedValue)
+  
+        toggleTables()
+    }
+  
+    
+    
+    $tabs.click(function(event) {
+      var selectedClass = 'is-tab-selected';
+      clearFilters()
+      $tabs.removeClass(selectedClass);
+      $(event.target).addClass(selectedClass);
+      buildFilterOptions()
+    });
+    
+    $('.boost-pfs-filter-option-item-list').on('change', ':checkbox', function(e) {
+        var $checkbox = $(this)
+        var checked = $checkbox.prop('checked')
+        var value = $checkbox.closest('li[data-value]').data('value')
+        var filter = $checkbox.closest('[data-filter]').data('filter')
+        toggleFilter(filter, value)
+        toggleTables()
+    })
+    
+    
+    $('.size-guides-filter').on('click', '.boost-pfs-filter-tree-mobile-button, .boost-pfs-filter-mobile-toolbar-top, .boost-pfs-filter-show-result', function(event) {
+        var $filtersContainer = $(this).closest('.size-guides-filter')
+      var $filtersTree = $filtersContainer.find('.boost-pfs-filter-tree')
+      $filtersTree.toggleClass('boost-pfs-filter-tree-mobile-open')
+    })
+    
+    buildFilterOptions()
+    
+  }, function() { return window.jQuery })
+  </script>

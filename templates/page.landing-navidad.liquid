@@ -1,0 +1,41 @@
+<style>
+  .landing-navidad h2 {
+	font-weight: 500 !important;
+  	font-size: 1.3rem !important;
+  }
+  @media screen and (min-width: 768px) {
+    .landing-navidad h2 {
+    	font-size: 28px !important;
+      	margin-bottom: 25px !important;
+    }
+  }
+  @media (max-width: 600px) {
+    div#shopify-section-image-bar-tbx-navidad-3 {
+    display: none;
+}
+              div#shopify-section-image-bar-thebox-2 {
+    display: none;
+}
+
+  }
+    @media (min-width: 601px) {
+div#shopify-section-image-bar-tbx-navidad-3-mobile {
+    display: none;
+}
+          div#shopify-section-image-bar-thebox-2-mobile {
+    display: none;
+}
+}
+  }
+</style>
+
+<div class="page landing landing-navidad">
+  {% section 'slideshow-navidad-tbx-v2' %}
+    {% section 'image-bar-tbx-navidad' %}
+    {% section 'image-bar-tbx-navidad-2' %}
+  	{% section 'image-bar-tbx-navidad-3' %}
+    {% section 'image-bar-tbx-navidad-3-mobile' %}
+  	{% section 'image-bar-thebox-2' %}
+    {% section 'image-bar-thebox-2-mobile' %}
+   	{% section 'slideshow-navidad-tbx-v2-2' %}
+</div>

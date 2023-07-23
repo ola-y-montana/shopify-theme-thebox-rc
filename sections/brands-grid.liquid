@@ -1,0 +1,271 @@
+{% capture section_class %}{{ section_id }}{% endcapture %}
+
+<style>
+  
+  {{ section_class }} .brands-grid-thebox-wrapper .main-title {
+    font-family: 'hurme';
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 35px;
+  }
+  {{ section_class }} .brands-grid-thebox .brands {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    justify-content: center;
+    align-items: center;
+  }
+  {{ section_class }} .brands-grid-thebox .brand {
+	margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  {{ section_class }} .characters-list {
+    padding-bottom: 8px;
+    border-bottom: rgb(189,189,189) 1px solid;
+  }
+  {{ section_class }} .characters-list li {
+  	float: left;
+    margin-right: 11px;
+    text-decoration: underline;
+	text-transform: uppercase;
+  }
+  {{ section_class }} .brands-listing .list li {
+    margin-bottom: 15px;
+  }
+  
+  @media screen and (max-width: 425px) {
+    {{ section_class }} .brands-grid-thebox-wrapper .main-title {
+		font-size: 0.8rem;
+    	margin-bottom: 15px;
+    }
+    {{ section_class }} .brands-grid-thebox .brand {
+      margin-left: 0.5rem;
+      margin-bottom: 0.4rem;
+      width: 22%;
+    }
+    {{ section_class }} .brands-grid-thebox .brand img {
+/*     	height: 73px; */
+		height: auto;
+      	width: 148px;
+  	}
+    {{ section_class }} .brands-grid-thebox-wrapper .main-title {
+    	font-size: 0.8rem;
+    	margin-bottom: 15px;
+    }
+    {{ section_class }} .characters-list {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+  }
+
+  @media screen and (min-width: 426px) {
+   	{{ section_class }} .brands-grid-thebox .brand img {
+  		height: auto;
+      	width: 148px;
+  	}
+    {{ section_class }} .characters-list li {
+    	font-size: 0.9rem;
+    }
+    {{ section_class }} .characters-list li:not(:last-of-type) {
+      	border-right: 2px solid;
+    	padding-right: 7px;
+  	}
+    {{ section_class }} .brands-listing .list {
+      -webkit-column-count: 4;
+      -moz-column-count: 4;
+      column-count: 4;
+      -moz-column-fill: auto;
+      column-fill: auto;
+    }
+  }
+
+}
+</style>
+
+<div class="brands-grid-thebox-wrapper">
+  <h1 class="main-title">
+  	{{ section.settings.title }}
+  </h1>
+  <div class="brands">
+  {% for block in section.blocks limit: section.blocks.size %}
+  		{% assign image = block.settings.image %}
+        <div class="brand">
+          {% if block.settings.link != blank %}
+          {%- capture link -%}
+          	{{ block.settings.link }}{%- if block.settings.link_tag -%}/{{ block.settings.link_tag | join: "+"}}{%- endif -%}
+          {%- endcapture -%}
+          <a href="{{ link | handlesize }}" title="{{ block.settings.title }}">
+          {% endif %}
+            <img src="{{ image | img_url: 'master' }}" width="{{ image.width }}" height="{{ image.height }}" />
+          {% if block.settings.link != blank %}      
+          </a>
+          {% endif %}	
+        </div>
+  {% endfor %}
+  </div>
+  <h2 class="main-title" style="margin-top: 2rem;font-size: 23px!important;">
+    {{ section.settings.second_title }}
+  </h2>
+  
+  {% assign chars = "todo, #, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z" | split: ','%}
+  
+  <div class="brands-listing">
+    <ul class="characters-list">
+      {% for char in chars %}
+      	<li><a href="#" data-char="{{ char }}">{{ char }}</a></li>
+  	  {% endfor %}
+      <li style="clear:both; float: none;"></li>
+    </ul>
+    <ul class="list" style="margin-top: 1rem;">
+      {% assign brands_list = section.blocks | map: 'settings' | sort: "title" %}
+      {% for brand in brands_list limit: brands_list.size %}
+        {% if brand.link != blank %}
+          {%- capture link -%}
+          	{{ brand.link }}{%- if brand.link_tag -%}/{{ brand.link_tag | join: "+"}}{%- endif -%}
+          {%- endcapture -%}
+      	{% endif %}
+      	<li><a href="{{ link | handlesize | default: '#' }}" title="{{ brand.title }}"><h2 style="color: #3a3a3a;text-decoration: none;text-transform: capitalize;letter-spacing: .0em;font-weight: 600;line-height: 1.1;">{{ brand.title }}<h2></a></li>
+  	  {% endfor %}
+    </ul>
+  </div>
+  
+</div>
+
+<script>
+ function defer(method, validation) {
+    if (validation()) {
+      method();
+    } else {
+      setTimeout(function() { defer(method, validation) }, 50);
+    }
+ }
+</script>
+
+
+<script>
+  defer(function(){
+    
+    var $brandsList = $('.brands-listing .list')
+    
+    $brandsList.css('min-height', $brandsList.height() + 'px')
+    
+    var $brandsListClone = $brandsList.clone(true, true)
+    
+    $('[data-char]').on('click', function() {
+
+        var $el = $(this)
+        var char = $el.data('char')
+        var $brandsList = $('.brands-listing .list')
+
+        if (!char || char === 'todo') {
+          $brandsList.replaceWith($brandsListClone)
+          $brandsList.find('li').show()
+          return false
+        }
+
+        $brandsList.find('li').each(function(i) {
+          var brandName = $(this).find('a').text()
+          
+          if (!brandName) { return true }
+          
+          var show = true
+          
+          if (char === '#') {
+			show = !!brandName.trim().match(/^\d/)
+          } else {
+			show = !!brandName.toUpperCase().trim().startsWith(char.trim().toUpperCase())
+          }
+          
+          $(this).toggle(show)
+          
+        })
+
+    })
+    
+    
+  }, function() { return window.jQuery })
+
+</script>
+
+{% schema %}
+  {
+    "name": {
+      "en": "Brands Grid TheBox",
+      "es": "Cuadricula de Marcas TheBox"
+    },
+    "class": "thebox-section brands-grid-thebox",
+    "settings": [{
+      "type": "text",
+      "id": "title",
+      "label": {
+        "en": "Heading",
+        "es": "Título"
+      },
+      "default": "¡Las Mejores Marcas están en The Box!"
+	},
+	{	
+		"type": "text",
+		"id": "second_title",
+		"label": {
+			"en": "Title 2",
+			"es": "Título 2"
+		},
+		"default": "Nuestras Marcas"
+	}
+	],
+    "blocks": [
+		{
+			"type": "brand",
+			"name": {
+				"en": "brand",
+				"es": "Marca"
+			},
+			"settings": [
+			  {
+                "id": "image",
+                "type": "image_picker",
+                "label": {
+                  "en": "Image",
+                  "es": "Imagen"
+				}		
+              },
+			  {
+                "id": "title",
+                "type": "text",
+                "label": {
+                  "en": "Name",
+                  "es": "Nombre"
+                }
+			  },
+			  {
+                "id": "link",
+                "type": "url",
+                "label": {
+                  "en": "Link",
+                  "es": "Enlace"
+                }
+			  },
+			  {
+				"id": "link_tag",
+				"type": "text",
+				"label": {
+					"en": "Filtrar la colección con etiquetas (opcional)",
+				    "es": "Filter collection with tags (optional)"
+				}
+			  }
+			]
+		}
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,187 @@
+{% capture component_class %}base-section-tbx-v2_{{section.id}}{% endcapture %} 
+
+<style>
+  .{{ component_class }}  {
+    margin: auto;
+	max-width: 100%;
+    {% if section.settings.width == blank or section.settings.full_width %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.width }};
+    {% endif %}
+    {% if section.settings.custom_top_spacing_mobile != blank %}
+    	margin-top: {{ section.settings.custom_top_spacing_mobile }};
+    {% endif %}
+    {% if section.settings.custom_bottom_spacing_mobile != blank %}
+    	margin-bottom: {{ section.settings.custom_bottom_spacing_mobile }};
+    {% endif %}
+  }
+  @media only screen and (min-width: 768px) {
+    .{{ component_class }}  {
+      {% if section.settings.custom_top_spacing != blank %}
+      margin-top: {{ section.settings.custom_top_spacing }};
+      {% endif %}
+      {% if section.settings.custom_bottom_spacing != blank %}
+      margin-bottom: {{ section.settings.custom_bottom_spacing }};
+      {% endif %}
+    }
+  }
+</style>
+
+{% if section.settings.custom_css != blank %}
+{% assign component_selector = component_class | prepend: '.' %} 
+<style>
+	{{ section.settings.custom_css | replace: '$component_class', component_selector }}
+</style>
+{% endif %}
+
+<div class="{{ component_class }}">
+	{% if section.settings.custom_html != blank %}
+  		{{ section.settings.custom_html }}
+  	{% endif %}
+</div>
+
+{% if section.settings.custom_js != blank %}
+	<script>
+      function defer(method) {
+        if (window.jQuery) {
+          method();
+        } else {
+          setTimeout(function() { defer(method) }, 50);
+        }
+      }
+      defer(function(){
+        $(document).ready(function(){
+      		{{ section.settings.custom_js }}
+        })
+      })
+	</script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Base Section",
+	"class": "thebox-section base-section-tbx-v2-wrapper",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": {
+          "en": "Show Title",
+          "es": "Mostrar Título"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": {
+          "en": "Title",
+          "es": "Título"
+       }
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": {
+          "en": "Show Title",
+          "es": "Mostrar Descripción"
+        },
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": {
+          "en": "Description",
+          "es": "Descripción"
+       }
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": {
+          "en": "Full width",
+          "es": "Ancho completo"
+        },
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "width",
+        "label": {
+          "en": "Custom width",
+          "es": "Ancho personalizado"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_height",
+        "label": {
+          "en": "Custom height",
+          "es": "Altura personalizada"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing",
+        "label": {
+          "en": "Custom top spacing",
+          "es": "Espaciado superior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing",
+        "label": {
+          "en": "Custom bottom spacing",
+          "es": "Espaciado inferior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing_mobile",
+        "label": {
+          "en": "Custom top spacing mobile",
+          "es": "Espaciado superior mobile"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing_mobile",
+        "label": {
+          "en": "Custom bottom spacing mobile",
+          "es": "Espaciado inferior mobile"
+       }
+      },
+      {
+        "type": "html",
+        "id": "custom_js",
+        "label": "Código JS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_css",
+        "label": "Código CSS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_html",
+        "label": "Plantilla HTML personalizada"
+      }
+	],
+    "presets": [
+      {
+        "name": {
+            "en": "Base Section TBX v2",
+            "es": "Base Section TBX v2"
+        },
+        "category": {
+          "en": "TheBox Theme v2",
+          "es": "TheBox Theme v2"
+        }
+      }
+    ]
+  }
+{% endschema %}
+

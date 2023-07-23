@@ -1,0 +1,191 @@
+/*********************** Custom CSS for Boost Filter & Search  ************************/
+{% assign breakpointMobile = '767px' %}
+{% assign breakpointDesktop = '768px' %}
+{% assign searchBoxMobileHeight = '64px' %}
+
+.boost-pfs-filter-tree {
+    width: 20%;
+    float: left
+}
+
+.boost-pfs-filter-right {
+    width: 80%;
+    float: right
+}
+
+.boost-pfs-filter-right .boost-pfs-filter-products {
+    width: 100%;
+    float: right;
+    overflow: visible;
+    height: auto!important
+}
+
+@media screen and (max-width: 767px) {
+    .boost-pfs-filter-tree {
+        display:none;
+        width: 100%;
+        float: none
+    }
+
+    .boost-pfs-filter-right,.boost-pfs-filter-right .boost-pfs-filter-products {
+        width: auto;
+        float: none
+    }
+
+    .boost-pfs-filter-top-display-type span {
+        display: none
+    }
+
+    .boost-pfs-filter-top-display-type .boost-pfs-filter-display-item:nth-of-type(1) {
+        margin-left: 0
+    }
+}
+
+.boost-pfs-filter-products .has-bc-quickview {
+    overflow: hidden
+}
+
+.boost-pfs-filter-products .list-view-items {
+    margin-left: 30px
+}
+
+.product-card--list .list-view-item__link {
+    display: table;
+    table-layout: fixed;
+    width: 100%
+}
+
+.boost-pfs-filter-products .grid-view-item {
+    position: relative
+}
+
+.boost-pfs-filter-products .full-width-link {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9
+}
+
+.boost-pfs-filter-products .price--on-sale .price__sale {
+    display: block
+}
+
+.boost-pfs-filter-products .price__sale {
+    display: none;
+    color: #557b97
+}
+
+.boost-pfs-filter-products .price__regular {
+    color: #69727b
+}
+
+.boost-pfs-search-suggestion-header {
+    font-size: 13px
+}
+
+.boost-pfs-search-suggestion-header-view-all a,.boost-pfs-search-suggestion-item a {
+    font-size: 14px
+}
+
+.template-search .filters-toolbar-wrapper {
+    margin-top: 55px
+}
+
+#SearchInput {
+    display: none!important
+}
+
+.boost-pfs-filter-option-item-list.boost-pfs-filter-option-item-list-swatch.circle-grid {
+    padding-right: 0!important
+}
+
+.boost-pfs-filter-option-content .boost-pfs-filter-option-item-list.boost-pfs-filter-option-item-list-swatch.circle-grid li .boost-pfs-filter-option-swatch-image:before {
+    border-radius: 0!important
+}
+
+.boost-pfs-filter-option-content .boost-pfs-filter-option-item-list.boost-pfs-filter-option-item-list-swatch .boost-pfs-filter-option-item .boost-pfs-filter-option-swatch-image {
+    border-radius: 0!important
+}
+
+@media screen and (max-width: 767px) {
+    .boost-pfs-filter-option-content .boost-pfs-filter-option-item-list.boost-pfs-filter-option-item-list-swatch.circle-grid li {
+        margin:6px 2px
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .boost-pfs-filter-option-content .boost-pfs-filter-option-item-list.boost-pfs-filter-option-item-list-swatch .boost-pfs-filter-option-item .boost-pfs-filter-option-swatch-image {
+        width:50px;
+        height: 32px
+    }
+}
+
+.boost-pfs-filter-option-swatch-image[title=Azul] {
+    background-color: #0b108c
+}
+
+.boost-pfs-filter-option-swatch-image[title=Beige] {
+    background-color: #cfb174
+}
+
+.boost-pfs-filter-option-swatch-image[title=Blanco] {
+    background-color: #fff
+}
+
+.boost-pfs-filter-option-swatch-image[title=Gris] {
+    background-color: #ddd
+}
+
+.boost-pfs-filter-option-swatch-image[title=Negro] {
+    background-color: #000
+}
+
+.boost-pfs-filter-option-swatch-image[title=Rojo] {
+    background-color: #db002f
+}
+
+.boost-pfs-filter-option-swatch-image[title=Rosado] {
+    background-color: #fcd9e5
+}
+
+.boost-pfs-filter-option-swatch-image[title=Amarillo] {
+    background-color: #fdec6f
+}
+
+.boost-pfs-filter-option-swatch-image[title=Celeste] {
+    background-color: #94bfdc
+}
+
+.boost-pfs-filter-option-swatch-image[title="Marrón"] {
+    background-color: #8e5b3e
+}
+
+.boost-pfs-filter-option-swatch-image[title=Morado] {
+    background-color: #6d165a
+}
+
+.boost-pfs-filter-option-swatch-image[title=Mostaza] {
+    background-color: #e8de87
+}
+
+.boost-pfs-filter-option-swatch-image[title=Naranja] {
+    background-color: #fc930a
+}
+
+.boost-pfs-filter-option-swatch-image[title=Verde] {
+    background-color: #519548
+}
+
+.boost-pfs-filter-option-swatch-image[title=Crema] {
+    background-color: #fff8d4
+}
+
+.boost-pfs-filter-option-swatch-image[title=Camuflaje] {
+    background-image: url(//cdn.shopify.com/s/files/1/0373/4513/2676/t/71/assets/FiltroCamuflaje.png?v=8015411993077108649)!important
+}
+
+.boost-pfs-filter-option-swatch-image[title=Multicolor] {
+    background-image: url(//cdn.shopify.com/s/files/1/0373/4513/2676/t/71/assets/FiltroMulticolor.png?v=12037144571345714309)!important
+}

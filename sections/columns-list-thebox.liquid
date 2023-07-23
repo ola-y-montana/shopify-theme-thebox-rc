@@ -1,0 +1,268 @@
+{%- if section.settings.cl_thebox_active -%}
+
+<style>
+  .columns-list-thebox {
+    padding-left: 1px;
+    padding-right: 1px;
+    max-width: 100%;
+    margin-top: 80px !important;
+    margin-bottom: 70px;
+  }
+  .columns-list-thebox .grid-item-thebox {
+    padding-left: 0px;
+  }
+  .columns-list-thebox .collection-grid {
+    overflow: initial;
+  }
+  .columns-list-thebox .collection-grid-item {
+    margin-bottom: 10px;
+    padding-bottom: inherit;
+  }
+  .columns-list-thebox .columns-list-grid-thebox {
+    margin: 0px;
+  }
+  .columns-list-thebox .section-header {
+    margin: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #606060;
+  }
+  .columns-list-thebox .section-header h2 {
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 0px;
+  }
+  .columns-list-thebox.full-size {
+  	padding: 0;
+  }
+  .columns-list-thebox.full-size .grid-item-thebox {
+    padding-left: 0px;
+/*     height: 440px; */
+  }
+  .columns-list-thebox.full-size .collection-grid-item {
+    margin-bottom: 0px;
+  }
+  .grid--uniform.columns-list-grid-thebox {
+	 display: none;
+  }
+   .grid--uniform.columns-list-grid-thebox.mobile {
+       display: block;
+       margin-left: 20px;
+       margin-right: 20px;
+  }
+  @media (min-width: 426px) {
+       .grid--uniform.columns-list-grid-thebox {
+           display: block;
+      }
+       .grid--uniform.columns-list-grid-thebox.mobile {
+           display: none;
+      }
+  }
+  @media only screen and (min-width: 749px) {
+    .columns-list-thebox {
+        margin-bottom: 100px;
+    }
+    .columns-list-thebox .section-header {
+    	font-size: 1.4rem
+    }
+    .columns-list-thebox .columns-list-grid-thebox {
+      margin: 15px 25px;
+      margin-left: 17px;
+    }
+    .columns-list-thebox.full-size .columns-list-grid-thebox {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .columns-list-thebox.full-size .grid-item-thebox, .columns-list-thebox.full-size .collection-grid-item__link {
+   	  height: 440px;
+    }
+  }
+</style>
+
+<div class="columns-list-thebox page-width {% if section.settings.full_size %} full-size {% endif %}">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {% if section.blocks.size > 1 and section.blocks.size < 6 %}
+    {% assign grid = section.blocks.size %}
+  {% else %}
+    {% assign grid = 4 %}
+  {% endif %}
+  {% case grid %}
+    {% when 2 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-half' -%}
+    {% when 3 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+    {% when 4 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-quarter' -%}
+    {% when 5 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
+  {% endcase %}
+
+  <div class="collection-grid">
+    <ul class="grid grid--uniform columns-list-grid-thebox">
+      {% for block in section.blocks limit: section.blocks.size %}
+        <li class="grid__item grid-item-thebox {{ grid_item_width }}" {{ block.shopify_attributes }}>
+          {% assign column_image = block.settings.column_image | img_url: '1024x1024' %}
+          {% include 'column-grid-item-thebox', column_image: block.settings.column_image , column_link: block.settings.column_link %}
+        </li>
+      {% endfor %}
+    </ul>
+    <ul class="grid grid--uniform columns-list-grid-thebox mobile">
+      {% for block in section.blocks limit: section.blocks.size %}
+        <li class="grid__item grid-item-thebox {{ grid_item_width }}" {{ block.shopify_attributes }}>
+          {% assign column_image = block.settings.column_image_mobile | img_url: '1024x1024' %}
+          {% include 'column-grid-item-thebox', column_image: block.settings.column_image_mobile , column_link: block.settings.column_link_mobile  %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+
+  {% unless section.blocks.size == 0 %}
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <hr class="hr--invisible" aria-hidden="true" style="margin-top: 0; margin-bottom: 40px;"/>
+      <div class="text-center">
+        <a href="{{ section.settings.button_link }}" class="btn" aria-label="{{ section.settings.button_label }}">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {% endif %}
+  {% endunless %}
+</div>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": {
+    "en": "Columns List TheBox",
+    "es": "Lista de columnas TheBox"
+  },
+  "class": "thebox-section columns-list-thebox",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "cl_thebox_active",
+      "label": {
+        "en": "Active",
+        "es": "Activo"
+      },
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "full_size",
+      "label": {
+        "en": "Spaceless columns",
+        "es": "Columnas sin espacios"
+      },
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": {
+        "en": "Heading",
+        "es": "Título"
+      },
+      "default": {
+        "en": "Columns List",
+        "es": "Lista de columnas"
+      }
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": {
+        "en": "Button label",
+        "es": "Etiqueta de botón"
+      }
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": {
+        "en": "Button Link",
+        "es": "Enlace de Botón"
+      }
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": {
+        "en": "Column",
+        "es": "Columna"
+      },
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "column_image",
+          "label": {
+            "en": "Image Desktop",
+            "es": "Imagen Desktop"
+          }
+        },
+        {
+          "type": "image_picker",
+          "id": "column_image_mobile",
+          "label": {
+            "en": "Mobile Image",
+            "es": "Imagen Mobile"
+          }
+        },
+        {
+          "type": "url",
+          "id": "column_link",
+          "label": {
+            "en": "Desktop Link",
+            "es": "Enlace Desktop"
+          }
+        },
+        {
+          "type": "url",
+          "id": "column_link_mobile",
+          "label": {
+            "en": "Mobile Link",
+            "es": "Enlace Mobile"
+          }
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": {
+        "en": "Lista de columnas TheBox",
+        "es": "Lista de columnas TheBox"
+      },
+      "category": {
+        "en": "TheBox Theme",
+        "es": "TheBox Theme"
+      },
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

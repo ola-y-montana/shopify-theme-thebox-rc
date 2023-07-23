@@ -1,0 +1,395 @@
+{% capture component_class %}banner-counter-html-tbx-v2_{{section.id}}{% endcapture %} 
+
+{% assign end_date = section.settings.end_date %}
+{% assign current_date = 'now' | date: '%s' %}
+{% assign comparison_date = end_date | date: '%s' %}
+
+{% if section.settings.active != blank and current_date < comparison_date %}
+<style>
+    .{{component_class}} {
+      position: fixed;       
+      top: 197px;
+      width: 100%;
+      z-index: 99;
+  }
+  @media (min-width: 768px){
+    .{{component_class}} {
+      top: 111px;
+    }
+  .announcement-bar-shown .{{component_class}} {
+      top: 161px;
+    }
+  }
+  .{{ component_class }}  .d-mobile {
+    display: none;
+  }
+  .{{ component_class }}  .d-desktop {
+    display: inherit;
+  }
+  .{{ component_class }}  {
+    margin: auto;
+	max-width: 100%;
+    {% if section.settings.width == blank or section.settings.full_width %}
+    	width: 100%;
+    {% else %}
+        width: {{ section.settings.width }};
+    {% endif %}
+    {% if section.settings.custom_top_spacing_mobile != blank %}
+    	margin-top: {{ section.settings.custom_top_spacing_mobile }};
+    {% endif %}
+    {% if section.settings.custom_bottom_spacing_mobile != blank %}
+    	margin-bottom: {{ section.settings.custom_bottom_spacing_mobile }};
+    {% endif %}
+  }
+  .{{ component_class }} .banner-x {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-height: 30px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .{{ component_class }} .banner-x .banner-x-description {
+    color: {{ section.settings.text_color_desc }}!important;
+    font-size: 23px;
+  }
+  @media only screen and (min-width: 768px) {
+    .{{ component_class }}  {
+      {% if section.settings.custom_top_spacing != blank %}
+      margin-top: {{ section.settings.custom_top_spacing }};
+      {% endif %}
+      {% if section.settings.custom_bottom_spacing != blank %}
+      margin-bottom: {{ section.settings.custom_bottom_spacing }};
+      {% endif %}
+    }
+    .{{ component_class }} .banner-x .banner-x-title {
+      font-size: 30px;
+      font-weight: 700;
+  	}
+    .{{ component_class }} .banner-x .banner-x-description {
+      font-size: 15px;
+      font-weight: 600;
+    }
+  }
+  .{{ component_class }} .banner-z {
+    padding-top: 9px!important;
+    padding-bottom: 4px;
+  }
+  @media (max-width: 600px) {
+    .{{ component_class }} .d-mobile {
+      display: inherit;
+    }
+    .{{ component_class }}  .d-desktop {
+      display: none;
+    }
+    .{{ component_class }} .banner-x {
+      display: flex;
+      width: 100%;
+      max-width: 100%;
+      min-height: 30px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-wrap: wrap;
+      padding: 0px;
+    }
+    .{{ component_class }} .banner-x .banner-x-description {
+      font-weight: 600;
+      color: #000;
+      font-size: 13px;
+    }
+    .{{ component_class }} .banner-z {
+      padding-bottom: 0px!important;
+      padding-top: 6px !important;
+      text-align: center;
+      padding-right: 6px;
+	}
+    a.btn.btn-primary {
+      font-size: 13px!important;
+	}
+    .counter {
+      margin-bottom: 10px;
+    }
+}
+  
+.{{ component_class }} {
+  display: flex;
+  background: {{ section.settings.bg_color }};
+}
+
+a.btn.btn-primary {
+  padding-left: 60px;
+  padding-right: 60px;
+  font-weight: 700!important;
+  background: #000;
+  font-size: 16px;
+}
+</style>
+
+{% if section.settings.custom_css != blank %}
+{% assign component_selector = component_class | prepend: '.' %} 
+<style>
+	{{ section.settings.custom_css | replace: '$component_class', component_selector }}
+</style>
+{% endif %}
+
+<div class="{{ component_class }}">
+    <div class="banner-x">
+        {% if section.settings.link != blank %}
+        <a href="{{ section.settings.link }}">
+        {% endif %}
+        {% if section.settings.show_description != blank %}
+        	<span class="banner-x-description">{{ section.settings.description }}</span>
+        {% endif %}
+        {% if section.settings.custom_html != blank %}
+    		{{ section.settings.custom_html }}
+    	  {% endif %}
+          <span class="counter" style="
+            color: #FEC00F;
+            background: transparent;
+            font-size: 1.20em;
+            font-weight: 600;
+            min-width: 185px;
+        ">0DÍAS | 0H | 00M | 00S</span>
+        {% if section.settings.link != blank %}
+        </a>
+        {% endif %}
+    </div>
+    <script>
+      document.body.classList.add("counter-bar-shown");
+    </script>
+</div>
+
+<!--SCRIPT COUNTADOR -->
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+<script>
+// Set the date we're counting down to
+var countDownDate = new dayjs("{{ end_date }}").valueOf();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+  // Get today's date and timce
+  var now = dayjs().valueOf();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.querySelectorAll(".{{component_class}} .counter").forEach((item, index) => item.innerHTML = (days ? (days + "DÍAS | ") : "") + hours + "HR | " + minutes + "MIN | " + seconds + "SEG")
+  //document.querySelectorAll(".{{component_class}} .counter").innerHTML = days + "DIA " + hours + "H " + minutes + "M " + seconds + "S ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+      //document.querySelectorAll(".{{component_class}} .counter").forEach((item, index) => item.innerHTML = "EXPIRED")
+      //document.querySelectorAll(".{{component_class}} .counter") .innerHTML = "EXPIRED";
+      $('.{{component_class}}').hide()
+      $(window).trigger('resize')
+  }
+}, 1000);
+
+defer(function(){
+  function dynamicSize() {
+    var $headerSection = $('div#shopify-section-header');
+    var $headerHeight = $headerSection.outerHeight();
+    var $newsletterCarousel = $('.newsletter-carousel-tbx-v2_newsletter-carousel .owl-carousel')
+    var $newsletterCarouselHeight =  $newsletterCarousel.length ? $newsletterCarousel.outerHeight() : 0;
+    $('.{{component_class}}').css('top', Number($headerHeight) + Number($newsletterCarouselHeight) )
+  }
+  
+$(window).load(function(){
+  dynamicSize();
+})
+$(document).on('shopify:section:load', function(){
+    dynamicSize();
+});
+  
+$(window).on("resize", $.debounce(500, dynamicSize));
+}, function() { return window.jQuery && $() && $().slick })
+  
+  
+</script>
+<!--FIN SCRIPT COUNTADOR -->     
+
+{% if section.settings.custom_js != blank %}
+	<script>
+      function defer(method) {
+        if (window.jQuery) {
+          method();
+        } else {
+          setTimeout(function() { defer(method) }, 50);
+        }
+      }
+      defer(function(){
+        $(document).ready(function(){
+      		{{ section.settings.custom_js }}
+        })
+      })
+	</script>
+{% endif %}
+
+{% endif %}
+
+{% schema %}
+{
+    "name": "Banner Contador TBX v2",
+	"class": "thebox-section banner-html-tbx-v2-wrapper",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "active",
+        "label": {
+          "en": "Activo (Show/Hide)",
+          "es": "Activo (Mostrar/Ocultar) "
+        },
+        "default": true
+      },
+      {
+          "type": "text",
+          "id": "end_date",
+          "label": "Fecha final del contador",
+          "default": "2022-10-29 00:00:00",
+          "info": "ejemplo: 2022-10-29 00:00:00"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": {
+          "en": "Background Color",
+          "es": "Color de Fondo"
+       },
+        "default": "#215990"
+      },
+      {
+        "type": "color",
+        "id": "text_color_desc",
+        "label": {
+          "en": "Text Color Descripción",
+          "es": "Color de Text Description"
+       },
+        "default": "#ffffff"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": {
+          "en": "Show description",
+          "es": "Mostrar Descripción"
+        },
+        "default": true
+      },
+      {
+        "type": "html",
+        "id": "description",
+        "label": {
+          "en": "Description",
+          "es": "Descripción"
+       },
+	   "default": "NO LO DEJES PASAR: ÚLTIMAS HORAS DEL CYBER THE BOX"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": {
+          "en": "Link",
+          "es": "Enlace"
+        }
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": {
+          "en": "Full width",
+          "es": "Ancho completo"
+        },
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "width",
+        "label": {
+          "en": "Custom width",
+          "es": "Ancho personalizado"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_height",
+        "label": {
+          "en": "Custom height",
+          "es": "Altura personalizada"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing",
+        "label": {
+          "en": "Custom top spacing",
+          "es": "Espaciado superior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing",
+        "label": {
+          "en": "Custom bottom spacing",
+          "es": "Espaciado inferior"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_top_spacing_mobile",
+        "label": {
+          "en": "Custom top spacing mobile",
+          "es": "Espaciado superior mobile"
+       }
+      },
+      {
+        "type": "text",
+        "id": "custom_bottom_spacing_mobile",
+        "label": {
+          "en": "Custom bottom spacing mobile",
+          "es": "Espaciado inferior mobile"
+       }
+      },
+      {
+        "type": "html",
+        "id": "custom_js",
+        "label": "Código JS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_css",
+        "label": "Código CSS personalizado"
+      },
+      {
+        "type": "html",
+        "id": "custom_html",
+        "label": "Plantilla HTML personalizada"
+      }
+	],
+    "presets": [
+      {
+        "name": {
+            "en": "Banner Contador HTML TBX v2",
+            "es": "Banner Contador HTML TBX v2"
+        },
+        "category": {
+          "en": "TheBox Theme v2",
+          "es": "TheBox Theme v2"
+        }
+      }
+    ]
+}
+{% endschema %}
+

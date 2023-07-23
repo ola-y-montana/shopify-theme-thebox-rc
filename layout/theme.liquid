@@ -1,0 +1,325 @@
+<!doctype html>
+<html class="no-js" lang="{{ shop.locale }}">
+<!-- Params: {{ request.path  }} -->
+<head>
+  {% if request.path == '/pages/tiendas-ads' %}
+    <meta http-equiv="refresh" content="0; url=/apps/store-locator">
+  {% endif %}
+  {% if request.path == '/collections' %}
+  	<meta content="0; url=/" http-equiv="refresh" />
+  {% endif %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <meta name="facebook-domain-verification" content="jbzuazko84057cdey4v46n1mclaay4" />
+  <meta name="facebook-domain-verification" content="t3kywc9wtun6r5ieutvj85vwb2je2j" />
+  <meta name="google-site-verification" content="bQWwzXLrVC6BlJ3F8ZO3DYJ2pbK4seok7K-n6ndyj2Y" />
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {% include 'kiwiSizing' %}
+
+{% assign boost_pfs_is_init = false %}    
+{%- if request.page_type == 'collection' or request.page_type == 'search' -%}
+    {%- unless template contains 'boost-pfs-original' -%}
+    {% assign boost_pfs_is_init = true %}
+	  {%- if request.page_type == 'collection' -%}
+    <link rel="preconnect" href="https://services.mybcapps.com/bc-sf-filter/filter" />
+    <link rel="dns-prefetch" href="https://services.mybcapps.com/bc-sf-filter/filter" />
+    {%- else -%}
+    <link rel="preconnect" href="https://services.mybcapps.com/bc-sf-filter/search" />
+    <link rel="dns-prefetch" href="https://services.mybcapps.com/bc-sf-filter/search" />
+    {%- endif -%}
+    <link rel="preload" href="{{ 'boost-pfs-vendor.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'boost-pfs-core.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'boost-pfs-filter.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'boost-pfs-instant-search.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'boost-pfs-otp.js' | asset_url }}" as="script">
+    {%- endunless -%}
+{%- endif -%}    
+
+{%- unless boost_pfs_is_init -%}
+    <link rel="preload" href="{{ 'boost-pfs-core-instant-search.js' | asset_url }}" as="script">    
+    <link rel="preload" href="{{ 'boost-pfs-instant-search.js' | asset_url }}" as="script">    
+{%- endunless -%}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {%- endif -%}
+
+  {%- capture seo_title -%}
+    {%- if request.page_type == 'search' and search.performed == true -%}
+      {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- else -%}
+      {{ page_title }}
+    {%- endif -%}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+    {%- unless escaped_page_title contains shop.name -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+
+  {%- if request.page_type == 'product' -%}
+    <!-- Avada Size Chart Script -->
+      {% include 'avada-sc-setting' %}
+    <!-- /Avada Size Chart Script -->
+  {%- endif -%}
+
+  <!-- Avada Size Chart Script -->
+   {% include 'avada-sc-setting' %}
+  <!-- /Avada Size Chart Script -->
+
+  
+
+  <!-- Avada Size Chart Script -->
+ {% include 'avada-sc-setting' %}
+  <!-- /Avada Size Chart Script -->
+
+<title>{{ seo_title | strip }}</title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% include 'social-meta-tags' %}
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" media="print" onload="this.media='all'" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" media="print" onload="this.media='all'" />
+
+  {% if request.path == '/pages/campana-tiendas' or request.path == '/pages/terminos-y-condiciones-2x1-en-tiendas'  %}
+    <style>
+      header.site-header, footer.site-footer, .newsletter-carousel-tbx-v2_newsletter-carousel {
+        display: none!important;
+        pointer-events: none;
+        height: 1px;
+        width: 1px;
+        opacity: 0;
+      }
+    </style>
+  {% endif %}
+
+  <script>
+    var theme = {
+      breakpoints: {
+        medium: 750,
+        large: 990,
+        widescreen: 1400
+      },
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        regularPrice: {{ 'products.product.regular_price' | t | json }},
+        salePrice: {{ 'products.product.sale_price' | t | json }},
+        sale: {{ 'products.product.on_sale' | t | json }},
+        fromLowestPrice: {{ 'products.product.from_lowest_price_html' | t: lowest_price: '[price]' | json }},
+        vendor: {{'products.product.vendor' | t | json }},
+        showMore: {{ 'general.filters.show_more' | t | json }},
+        showLess: {{ 'general.filters.show_less' | t | json }},
+        searchFor: {{ 'general.search.search_for' | t | json }},
+        addressError: {{ 'sections.map.address_error' | t | json }},
+        addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
+        authError: {{ 'sections.map.auth_error_html' | t | json }},
+        newWindow: {{ 'general.accessibility.link_messages.new_window' | t | json }},
+        external: {{ 'general.accessibility.link_messages.external' | t | json }},
+        newWindowExternal: {{ 'general.accessibility.link_messages.new_window_and_external' | t | json }},
+        removeLabel: {{ 'cart.label.remove' | t: product: '[product]' | json }},
+        update: {{ 'cart.label.update' | t | json }},
+        quantity: {{ 'cart.label.quantity' | t | json }},
+        discountedTotal: {{ 'cart.label.discounted_total' | t | json }},
+        regularTotal: {{ 'cart.label.regular_total' | t | json }},
+        priceColumn: {{ 'cart.label.price_column' | t | json }},
+        quantityMinimumMessage: {{ 'products.product.quantity_minimum_message' | t | json }},
+        cartError: {{ 'cart.general.cart_error' | t | json }},
+        removedItemMessage: {{ 'cart.general.removed_item_html' | t: quantity: '[quantity]', link: '[link]' | json }},
+        unitPrice: {{ 'products.product.unit_price_label' | t | json }},
+        unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},
+        oneCartCount: {{ 'cart.popup.cart_count' | t: count: 1 | json }},
+        otherCartCount: {{ 'cart.popup.cart_count' | t: count: '[count]' | json }},
+        quantityLabel: {{ 'cart.popup.quantity_label' | t: quantity_count: '[count]' | json }},
+        products: {{ 'general.search.products' | t | json }},
+        loading: {{ 'general.search.loading' | t | json }},
+        number_of_results: {{ 'general.search.number_of_results' | t: result_number: '[result_number]', results_count: '[results_count]' | json }},
+        number_of_results_found: {{ 'general.search.number_of_results_found' | t: results_count: '[results_count]' | json }},
+        one_result_found: {{ 'general.search.one_result_found' | t | json }}
+      },
+      moneyFormat: {{ shop.money_format | json }},
+      moneyFormatWithCurrency: {{ shop.money_with_currency_format | json }},
+      settings: {
+        predictiveSearchEnabled: {{ settings.predictive_search_enabled | json }},
+        predictiveSearchShowPrice: {{ settings.predictive_search_show_price | json }},
+        predictiveSearchShowVendor: {{ settings.predictive_search_show_vendor | json }},
+        discountBubbleType: {{ settings.sale_discount_bubble_type | json }}
+      }
+    }
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  </script>
+
+  
+<script>function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"97ee20f7b32dc14c723a044130525707"})});</script>
+
+  
+  {%- if request.page_type contains 'customers/' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
+  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  
+  {% comment %}
+    <!-- Avada Email Marketing Script -->
+   	{% include 'avada-em-setting' %}
+    <!-- /Avada Email Marketing Script -->
+  {% endcomment %}
+  
+  {% capture h_content %}{{ content_for_header }}{% endcapture %}
+  
+  {% if request.page_type == 'index' %} 
+    {{ h_content | remove: '"https:\/\/thanhhd.com\/app\/public\/discounts-combine\/discounts-combine.js?shop=the-box-peru-sac.myshopify.com\u0026shop=the-box-peru-sac.myshopify.com",' | remove: '"https:\/\/sizechart.apps.avada.io\/scripttag\/avada-size-chart.min.js?shop=the-box-peru-sac.myshopify.com",' | remove: '"\/\/productreviews.shopifycdn.com\/embed\/loader.js?shop=the-box-peru-sac.myshopify.com",' | remove: '"https:\/\/instafeed.nfcube.com\/cdn\/6ef690f6e3dee9f41894fae0e164b943.js?shop=the-box-peru-sac.myshopify.com",' }}
+  {% elsif request.page_type != 'cart' %}
+  	{{ h_content | remove: '"https:\/\/thanhhd.com\/app\/public\/discounts-combine\/discounts-combine.js?shop=the-box-peru-sac.myshopify.com\u0026shop=the-box-peru-sac.myshopify.com",' }}
+  {% else %}	
+  	{{ h_content }}
+  {% endif %}  
+<!--   <script src="//staticxx.s3.amazonaws.com/aio_stats_lib_v1.min.js?v=1.0"></script>
+   -->
+  
+  {% if request.page_type == 'cart' %}
+  	{% include 'discount-combine' %}
+  {% endif%}
+
+  <!--begin-boost-pfs-filter-css-->
+    {% include 'boost-pfs-style' %}
+  <!--end-boost-pfs-filter-css-->
+
+  <!-- <script async src="https://assets.apphero.co/script_tags/320488_787916.js"></script>
+   -->
+
+  <!-- Global site tag (gtag.js) - Google Ads: 835488098 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-835488098"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'AW-835488098');
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8ZLWMSMZY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-R8ZLWMSMZY');
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WVPBV6S');</script>
+  <!-- End Google Tag Manager -->
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVPBV6S"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+<!--<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+  ttq.load('CF7C2M3C77UCCRP8KUR0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>-->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+  ttq.load('CH4M1V3C77U3R61EGKB0');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+{% include 'sca.storelocator' %}
+</head>
+
+<body class="template-{{ request.page_type | handle }}">
+  
+    {% if request.page_type == 'product' %}
+  		{% include 'modal-stock-by-store' %}
+    {% endif%}
+
+    {% if request.page_type != 'index' %}
+      {% include 'embeded-view-validation' %}
+    {% endif %}
+
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  {%- if settings.enable_ajax -%}
+    {% include 'cart-popup' %}
+  {%- endif -%}
+
+  {% section 'header' %}
+  {% section 'newsletter-carousel' %}
+  {% section 'banner-counter-html-tbx-v2' %}
+  
+  <div class="page-container drawer-page-content" id="PageContainer">
+
+    <main class="main-content js-focus-hidden" id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+<!--     <script src="//cdn.codeblackbelt.com/js/modules/shipping-rates-calculator-plus/main.min.js?shop=the-box-peru-sac.myshopify.com"></script>
+ -->
+    <div id="slideshow-info" class="visually-hidden" aria-hidden="true">
+      {{- 'sections.slideshow.navigation_instructions' | t -}}
+    </div>
+
+  </div>
+
+  <ul hidden>
+    <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
+    <li id="a11y-selection-message">{{ 'general.accessibility.selection_help' | t }}</li>
+  </ul>
+  
+
+  <!--begin-boost-pfs-js-->
+    {% include 'boost-pfs' %}
+  <!--end-boost-pfs-js-->  
+
+  {% if request.page_type == 'cart' %}
+    {% include 'cart.script' %}
+  {% elsif request.page_type == 'customers/addresses' %}
+    {% include 'customers-address.script' %}
+  {% elsif request.page_type == 'customers/register' %}
+    {%  include 'customers-register.script' %}
+  {% elsif request.path == '/pages/actualiza-tus-datos' %}
+    {%  include 'customers-register.script' %}
+  {% elsif request.path == '/pages/leads-landing-cyber' %}
+    {%  include 'customers-register.script' %}
+  {%  elsif request.page_type == 'product' %}
+    {% include 'google-ads-events-product.script' %}
+  {% endif %}
+
+{% include 'shopify-inbox-custom' %}
+
+<script src='{{ 'eproslider.js' | asset_url }}' async='async'></script>
+<script src="https://cdn.static.kiwisizing.com/SizingPlugin.prod.js?v=308&shop=the-box-peru-sac.myshopify.com"></script>
+<script src="https://www.powr.io/powr.js?platform=html"></script>
+</body>
+</html>

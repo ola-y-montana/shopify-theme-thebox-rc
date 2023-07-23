@@ -1,0 +1,41 @@
+{% comment %}
+    Renders a list of products from a collection
+
+    Accepts:
+    - category_image: {Image} Image to show in category square (required)
+    - category_link: {Url} url for square ancor (required)
+
+    Usage:
+    {% include 'collection-grid-item', category_image: block.settings.category_image, category_link: block.settings.category_link, %}
+{% endcomment %}
+
+<div class="collection-grid-item">
+  <a href="{% if category_link == empty %}#{% else %}{{ category_link }}{% endif %}" class="collection-grid-item__link">
+    {% unless category_image == blank %}
+      <div class="collection-grid-item__overlay box ratio-container lazyload js"
+        data-bgset="{% include 'bgset', image: category_image %}"
+        data-sizes="auto"
+        data-parent-fit="cover"
+        style="background-image: url('{{ category_image | img_url: '300x300' }}')">
+      </div>
+      <noscript>
+        <div class="collection-grid-item__overlay" style="background-image: url('{{ category_image | img_url: '1024x1024' }}')"></div>
+      </noscript>
+    {% else %}
+        <div class="collection-grid-item__overlay">
+          {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+    {% endunless %}
+
+    <div class="collection-grid-item__title-wrapper">
+      <!-- <div class="collection-grid-item__title h3">
+        {% if collection.title == blank %}
+          {{ 'homepage.onboarding.collection_title' | t }}
+        {% else %}
+          {{ collection.title }}
+        {% endif %}
+      </div> -->
+    </div>
+  </a>
+</div>

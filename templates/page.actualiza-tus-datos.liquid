@@ -1,0 +1,334 @@
+{% unless customer %}
+    {% assign login_url = '/account/login' %}
+    {% assign redirect_url = request.path %}
+    {% assign redirect_url_param = 'return_url=' | append: redirect_url %}
+    
+    {% assign login_redirect_url = login_url | append: '?' | append: redirect_url_param %}
+    
+    <script>
+        window.location.href = "{{ login_redirect_url }}";
+    </script>
+{% endunless %}
+
+
+<style>
+  .ui-datepicker {
+    width: 20em!important;
+  }
+  .gender-field {
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+  .form-vertical {
+    max-width: 100%;
+    width: 520px;
+    margin: auto;
+  }
+  .form-vertical form > p,
+  .form-vertical form > div {
+    margin-bottom: 15px;
+  }
+  .form-vertical input, .form-vertical select, .form-vertical .disclosure__toggle, .form-vertical textarea {
+    margin-bottom: 15px;
+  }
+  .btn.submit {
+    background: #000;
+    font-family: lato,sans-serif;
+    font-size: 14px;
+    width: 100%;
+    display: block;
+  }
+  .d-none {
+    display: none;
+  }
+  .loader-container {
+      position: relative;
+  }
+  .loader-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+  }
+  .loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .loader {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #fff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+  }
+  @keyframes spin {
+      0% {
+          transform: rotate(0deg);
+      }
+      100% {
+          transform: rotate(360deg);
+      }
+  }
+</style>
+
+<div class="page page-width page-update-your-data">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="loader-container">
+        <div class="form-vertical">
+          <form id="clienteForm" action="#" method="POST">
+            <input type="hidden" id="customerId" name="customerId" value="{{ customer.id }}"> 
+            <div class="line-item-property__field genre-form">
+              <label>Género</label>
+            <div class="gender-field">
+              <input type="radio" id="genero1" name="genero" value="genero:Hombre" data-customer-tag="genero"><label for="genero1">Hombre</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="radio" id="genero2" name="genero" value="genero:Mujer" data-customer-tag="genero"><label for="genero2">Mujer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="radio" id="genero3" name="genero" value="genero:Otro" data-customer-tag="genero"><label for="genero3">Otro</label>
+            </div>
+            </div>
+            {% render 'birthday-field' %}
+              <p class="form-el">
+                  <label for="nombre">Nombre</label>
+                  <input required class="required" type="text" name="Nombre" autocomplete="given-name" value="">
+              </p>
+              <p class="form-el">
+                  <label for="apellido">Apellido</label>
+                  <input required class="required" type="text" name="Apellido" autocomplete="additional-name family-name" value="">
+              </p>
+              <p class="form-el">
+                  <label for="Email">Email</label>
+                  <input required type="email" name="Email" value="">
+              </p>
+            <p class="form-el">
+              <input type="checkbox" id="updateAddress" name="updateAddress" value="1" checked>
+              <label for="updateAddress">Actualizar también estos datos en mi dirección principal</label>
+            </p>
+            <div style="text-align:center">
+              <button type="submit" class="btn submit">Guardar</button>
+            </div>
+            <p class="text-center text-success" style="display: none">¡Tus datos fueron actualizados correctamente!</p>
+            <p class="text-center text-error" style="display: none; color: red;">Ocurrió un error al actualizar los datos</p>
+
+            <div class="formErrorsWrapper form-message form-message--error d-none">
+             <h2 class="h3 form-message__title " data-form-status="">Por favor, corrige lo siguiente:</h2>
+             <div class="formErrorsList errors">
+                <ul></ul>
+             </div>
+          </div>
+          </form>
+        </div>
+
+        <div class="loader-overlay">
+            <div class="loader-wrapper">
+                <div class="loader"></div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('clienteForm');
+      const formErrorsWrapper = document.querySelector('.formErrorsWrapper');
+      const formErrorsList = document.querySelector('.formErrorsList');
+      const loaderOverlay = document.querySelector('.loader-overlay') 
+
+      const customerIdInput = document.querySelector('input[name="customerId"]');
+      const dobInput = document.querySelector('input[name="customer[note][dob]"]');
+      const firstNameInput = document.querySelector('input[name="Nombre"]')
+      const lastNameInput = document.querySelector('input[name="Apellido"]')
+      const emailInput = document.querySelector('input[name="Email"]')
+      
+      const textSuccess = document.querySelector('.text-success')
+      const textError = document.querySelector('.text-error')
+
+      async function getUserData() {
+          try {
+              const clienteId = customerIdInput.value
+              const response = await fetch(`https://oymbrands.com:3000/api/tasks/shopify/clientes/${clienteId}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-api-key': '73a1f0cc-bhyo-2433-cega-7c070e91b07a',
+                }
+              })
+              loaderOverlay.style.display = 'flex'
+              const data = await response.json()
+              const etiquetasActuales = data.tags ? data.tags.split(',') : [];
+              const notasActuales = data.note ? data.note.split('\n') : [];
+              const genreTag = etiquetasActuales.find(tag => tag.startsWith('genero:'));
+              const birthdateNote = notasActuales.find(nota => nota.startsWith('dob:'));
+              const dobTextInput = document.getElementById('bday1');
+              const firstNameInput = document.querySelector('input[name="Nombre"]')
+              const lastNameInput = document.querySelector('input[name="Apellido"]')
+              const emailInput = document.querySelector('input[name="Email"]')
+              if (genreTag) {
+                const genreCheckbox = document.querySelector(`input[name="genero"][value="${genreTag}"]`)
+                if (genreCheckbox) {
+                  genreCheckbox.checked = true
+                }
+              } if (birthdateNote) {
+                  dobTextInput.value = birthdateNote.replace('dob:', '')
+                  dobInput.value = birthdateNote.replace('dob:', '')
+              }
+              firstNameInput.value = data.first_name
+              lastNameInput.value = data.last_name
+              emailInput.value = data.email
+              loaderOverlay.style.display = 'none'
+          } catch(error) {
+              console.log(error)
+              loaderOverlay.style.display = 'none'
+          }
+      }
+
+      getUserData()
+      
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        textSuccess.style.display = 'none'
+
+        const generoCheckboxesLabels = document.querySelectorAll('input[name="genero"] + label')
+        const dobTextInput = document.getElementById('bday1')
+        const generoInput = document.querySelector('input[name="genero"]:checked');
+        const updateAddressInput = document.querySelector('[name="updateAddress"]')
+
+        // Verificar si los campos tienen valor
+        let isValid = true;
+        const missingFields = [];
+        
+        if (!generoInput || !generoInput.value) {
+            generoCheckboxesLabels.forEach(g => {
+              g.style.color = 'red';
+              g.parentElement.style.borderColor = 'red';
+            })
+            missingFields.push('Género');
+            isValid = false;
+        } else {
+            generoCheckboxesLabels.forEach(g => {
+              g.style.color = 'inherit'; // Revertir el borde rojo si el campo tiene valor
+              g.parentElement.style.borderColor = 'inherit';
+            })
+        }
+        
+        if (!dobInput || !dobInput.value) {
+          dobTextInput.style.border = '1px solid red';
+          missingFields.push('Fecha de nacimiento');
+          isValid = false;
+        } else {
+          dobTextInput.style.border = ''; // Revertir el borde rojo si el campo tiene valor
+        }
+
+        if (!firstNameInput || !firstNameInput.value) {
+          firstNameInput.style.border = '1px solid red';
+          missingFields.push('Nombre');
+          isValid = false;
+        } else {
+          firstNameInput.style.border = ''; // Revertir el borde rojo si el campo tiene valor
+        }
+
+        if (!lastNameInput || !lastNameInput.value) {
+          lastNameInput.style.border = '1px solid red';
+          missingFields.push('Apellido');
+          isValid = false;
+        } else {
+          lastNameInput.style.border = ''; // Revertir el borde rojo si el campo tiene valor
+        }
+        
+        if (!emailInput || !emailInput.value) {
+          emailInput.style.border = '1px solid red';
+          missingFields.push('Email');
+          isValid = false;
+        } else {
+          emailInput.style.border = ''; // Revertir el borde rojo si el campo tiene valor
+        }
+        
+        // Actualizar los errores y mostrarlos si existen campos faltantes
+        if (!isValid) {
+          // Limpiar contenido y mostrar la lista de errores
+          formErrorsList.innerHTML = '';
+          missingFields.forEach(field => {
+            const errorItem = document.createElement('li');
+            errorItem.textContent = `El campo "${field}" es obligatorio.`;
+            formErrorsList.appendChild(errorItem);
+          });
+          formErrorsWrapper.classList.remove('d-none');
+          
+          // Detener el envío del formulario
+          return;
+        }
+        
+        // Si todos los campos son válidos, continuar con el envío del formulario
+        const clienteId = customerIdInput.value;
+        const url = `https://oymbrands.com:3000/api/tasks/shopify/clientes/${clienteId}`;
+        
+        const formData = {
+          firstName: firstNameInput.value,
+          lastName: lastNameInput.value,
+          email: emailInput.value,
+          genre: generoInput.value,
+          dob: dobInput.value,
+          updateAddress: updateAddressInput.value,
+        };
+
+        loaderOverlay.style.display = 'flex'
+        
+        fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': '73a1f0cc-bhyo-2433-cega-7c070e91b07a',
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            return handleError(data.error) 
+          } 
+          return handleSuccess()
+        })
+        .catch(error => handleError(error));
+      });
+
+      function reset() {
+        //Revertir al inicio del request para futuros intentos
+        const dobTextInput = document.getElementById('bday1')
+        const generoInput = document.querySelector('input[name="genero"]:checked');
+        generoInput.style.border = '';
+        dobInput.style.border = '';
+        formErrorsWrapper.classList.add('d-none');
+        loaderOverlay.style.display = 'none'
+      }
+
+      function handleError(error) {
+        console.error('Error al enviar el formulario:', error);
+        textError.style.display = 'block'
+        reset()
+      }
+
+      function handleSuccess() {
+        textSuccess.style.display = 'block'
+        reset()
+      }
+    });
+  </script>
+</div>

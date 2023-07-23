@@ -1,0 +1,281 @@
+{% capture component_class %}register-form-section_{{section.id}}{% endcapture %} 
+
+<style>
+  .{{ component_class }} {
+    padding: 20px;
+  }
+  .{{ component_class }} .ui-datepicker {
+    width: 20em!important;
+  }
+  .{{ component_class }} .gender-field {
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+  .{{ component_class }} .form-vertical input, .form-vertical select, .form-vertical .disclosure__toggle, .form-vertical textarea {
+    margin-bottom: 15px;
+  }
+  .{{ component_class }} input.btn.btn-create-account {
+    background: #000;
+    font-family: lato,sans-serif;
+    font-size: 15px;
+  }
+  .{{ component_class }} .d-none {
+    display: none;
+  }
+</style>
+
+
+<div class="{{ component_class }} form-vertical">
+  {%- assign formId = 'RegisterForm' -%}
+  {% form 'create_customer', id: formId %}
+    {% include 'form-status', form: form, form_id: formId %}
+
+    <label for="{{ formId }}-FirstName">{{ 'customer.register.first_name' | t }}</label>
+    <input type="text" name="customer[first_name]" id="{{ formId }}-FirstName" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocomplete="given-name">
+
+    <label for="{{ formId }}-LastName">{{ 'customer.register.last_name' | t }}</label>
+    <input type="text" name="customer[last_name]" id="{{ formId }}-LastName" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocomplete="family-name">
+  
+    <p class="line-item-property__field genre-form">
+      <label>Género</label>
+    <div class="gender-field">
+      <input type="radio" id="genero1" name="genero" value="genero:Hombre" data-customer-tag="genero"><label for="genero1">Hombre</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" id="genero2" name="genero" value="genero:Mujer" data-customer-tag="genero"><label for="genero2">Mujer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" id="genero3" name="genero" value="genero:Otro" data-customer-tag="genero"><label for="genero3">Otro</label>
+    </div>
+    </p>
+
+    {% render 'birthday-field' %}
+
+    {% comment %}{% render 'instagram-field' %}{% endcomment %}
+
+    <input type="hidden" name="customer[tags]" value=""/>
+
+    <label for="{{ formId }}-email">{{ 'customer.register.email' | t }}</label>
+    <input
+      type="email"
+      name="customer[email]"
+      id="{{ formId }}-email"
+      class="{% if form.errors contains 'email' %} input--error{% endif %}"
+      {% if form.email %} value="{{ form.email }}"{% endif %}
+      autocorrect="off"
+      autocapitalize="off"
+      autocomplete="email"
+      aria-required="true"
+      required
+      {%- if form.errors contains 'email' -%}
+        class="input--error"
+        aria-invalid="true"
+        aria-describedby="{{ formId }}-email-error"
+      {%- endif -%}
+    >
+    {%- if form.errors contains 'email' -%}
+      <span id="{{ formId }}-email-error" class="input-error-message">
+        <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+        {% include 'icon-error' %}
+        <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+      </span>
+    {%- endif -%}
+
+    <label for="{{ formId }}-password">{{ 'customer.register.password' | t }}</label>
+    <input
+      type="password"
+      name="customer[password]"
+      id="{{ formId }}-password"
+      class="{% if form.errors contains 'password' %} input--error{% endif %}"
+      aria-required="true"
+      required
+      {%- if form.errors contains 'password' -%}
+        class="input--error"
+        aria-invalid="true"
+        aria-describedby="{{ formId }}-password-error"
+      {%- endif -%}
+    >
+    {%- if form.errors contains 'password' -%}
+      <span id="{{ formId}}-password-error" class="input-error-message">
+        {% include 'icon-error' %}
+        <span>{{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.</span>
+      </span>
+    {%- endif -%}
+   <p>  
+     <div id="accepts_marketing " class="clearfix large_form">
+      <input style="float:none; vertical-align: middle; margin:0; margin-right: 6px;" type="checkbox" name="customer[accepts_marketing]" checked="checked" value="true" id="marketing" />
+      <label style="display:inline; float:none" for="marketing" style="font-weight:normal"><strong>Acepto recibir promociones y novedades por correo electrónico de The Box.</strong></label>
+     </div>
+</p>
+    <p style="float: none; text-align: left; clear: both; margin: 10px 0;">
+      <input style="float:none; vertical-align: middle; margin:0; margin-right: 6px;" type="checkbox" id="agree_terms" name="agree_terms" />
+      <label style="display:inline; float:none" for="agree">
+        Estoy de acuerdo con los <u><a href="/pages/terminos-y-condiciones">Términos y Condiciones</a></u> y la <u><a href="/pages/privacidad-y-confidencialidad"> Política de Tratamiento de Datos Personales</a></u>.
+      </label>
+    </p>
+
+    <p class="text-center" style="margin-top:20px;">
+      <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn btn-create-account">
+    </p>
+
+    <div class="formErrorsWrapper form-message form-message--error d-none">
+     <h2 class="h3 form-message__title " data-form-status="">Por favor, corrige lo siguiente:</h2>
+     <div class="formErrorsList errors">
+        <ul></ul>
+     </div>
+  </div>
+
+  {% endform %}
+</div>
+
+<script defer id="validteJsScript" src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+
+<script>
+  function defer(method, validation) {
+    if (validation()) {
+      method();
+    } else {
+      setTimeout(function() { defer(method, validation) }, 50);
+    }
+  }
+  
+  defer(function(){
+    $('[data-customer-tag]').on('input, change', function(e) {
+      var $customerTagsInput = $('[name="customer[tags]"]')
+      var customerTags = []
+
+      $('[data-customer-tag]').each(function(e) {
+        var $el = $(this)
+        var val = null
+
+        if ($el.is(':radio')) {
+          if ($el.is(':checked')) {
+            val = $el.val()
+          }
+        } else {
+          val = $el.val()
+        }
+
+        console.log($el, val)
+
+        if (!val) { 
+          return true 
+        }
+
+        customerTags.push(val)
+      }) 
+
+      $customerTagsInput.val(customerTags.join(','))
+
+    })
+
+    function validateForm(formObj) {        
+        var constraints = {
+          "customer[email]": {
+            presence: {allowEmpty: false},
+            email: true,
+          },
+          "customer[password]": {
+            presence: {allowEmpty: false},
+          },
+          "agree_terms": {
+            presence: {allowEmpty: false},
+            inclusion: {
+              within: [true, 1], 
+              message: "Debes aceptar los términos y condiciones para continuar"   
+            }
+          } 
+        };
+      
+        const aliases = {
+          "customer[email]": "Correo Electrónico",
+          "customer[password]": "Contraseña",
+          "agree_terms": " "
+        };
+
+        validate.validators.presence.options = { message: "no puede estar en blanco" };
+        validate.validators.numericality.options = { message: "debe ser numérico" };
+        validate.validators.length.options = { tooLong: "es demasiada larga, máximo %{count} caractéres" };
+
+        var validation = validate(formObj, constraints, {
+          prettify(string) {
+            return aliases[string] || validate.prettify(string);
+          }
+        }) || {};
+
+        var errors = Object.entries(validation);
+
+        if (!errors || !errors.length) {
+          return { success: true };
+        }
+        
+        const errorsMap = {
+          fields: {},
+          messages: [],
+        }
+
+        errors.forEach(item => {
+          const errorName = item && item[0];
+          const errorMesage = item && item[1] && item[1][0];
+          errorsMap.fields[errorName] = 1
+          errorsMap.messages.push(errorMesage)
+        });
+
+        console.log(errorsMap)
+                
+        return { success: false, errors: errorsMap };
+    }
+
+    $('body').on('click', '#RegisterForm .btn-create-account', function(event) {
+      try {
+          var $registerForm = $('#RegisterForm')
+          var $formFields = $registerForm.find("select, textarea, input, :checkbox");
+          var $errorsListWrapper = $registerForm.find('.formErrorsWrapper');
+          var $errorsList = $registerForm.find('.formErrorsList');
+          
+          $errorsListWrapper.addClass('d-none');
+          $errorsList.find('ul').remove();
+          $errorsList.append('<ul></ul>');
+          $formFields.removeClass('input--error');
+          
+          var validationDetails = validateForm($registerForm)
+          
+          console.log(validationDetails)
+          if (!validationDetails.success) {
+            validationDetails.errors.messages.forEach(function(errorMessage) {
+              $errorsList.find('ul').append('<li>'+ errorMessage +'</li>');
+            });
+            $errorsListWrapper.removeClass('d-none');
+            Object.keys(validationDetails.errors.fields).forEach(function(errorName) {
+              var $errorField = $registerForm.find('[name="'+ errorName +'"]');
+              if ($errorField && $errorField.length) {
+                $errorField.addClass('input--error');
+              }
+            })
+            return false;
+          }
+      } catch(error) {
+        console.log(error)
+      }
+      return true
+    })
+    
+    $('#RegisterForm').on('input', 'select, textarea, input, :checkbox', function (e) {
+      $(this).removeClass('input--error');
+    });
+
+  }, function() { return window.jQuery })
+
+
+</script>
+
+          
+{% schema %}
+  {
+    "name": "Register Form",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

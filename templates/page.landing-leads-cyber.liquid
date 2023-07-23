@@ -1,0 +1,149 @@
+<script>
+// Obtener la URL actual
+const urlActual = window.location.href;
+
+// Verificar si la URL actual no contiene el parámetro 'return_url'
+if (urlActual.indexOf('return_url') === -1) {
+  // Redirigir a la nueva URL con el parámetro 'return_url'
+  window.location.href = 'https://thebox.com.pe/pages/leads-landing-cyber?return_url=/pages/registro-exitoso?source=landing_cyber';
+}
+</script>
+
+<style>
+    .main-content {
+      padding-top: 0;
+    }
+    .landing-leads-cyber .flex-fluent-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .landing-leads-cyber h2 {
+      font-weight: 500 !important;
+        font-size: 1.3rem !important;
+    }
+    .cyber-questions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-top: 10px;
+      gap: 36px;
+    }
+    .cyber-questions h1, 
+    .cyber-questions .h1 {
+      font-size: 1.52857em;
+      padding-left: 23px;
+    }
+    .last {
+      font-size: 14px;
+      font-weight: 700!important;
+      align-items: center;
+      text-align: center;
+      margin-top: 4rem;
+    } 
+    ul.inside {
+      list-style-type: inside;
+    }
+    li.circle {
+      list-style-type: circle;
+    }
+    @media screen and (min-width: 768px) {
+      .landing-leads-cyber h2 {
+          font-size: 28px !important;
+            margin-bottom: 25px !important;
+      }
+      .landing-leads-cyber .flex-fluent-container {
+          flex-wrap: nowrap;
+      }
+      .cyber-questions {
+        gap: 36px;
+      }
+      .cyber-questions .grid {
+        flex-basis: 39%;
+      }
+    }
+    @media screen and (min-width: 1400px) {
+      .landing-leads-cyber .flex-fluent-container {
+          align-items: center;
+      }
+      .landing-leads-cyber .flex-fluent-container > div:first-of-type {
+          flex-basis: 60%;
+      }
+      .landing-leads-cyber .flex-fluent-container > div:last-of-type {
+          flex-basis: 40%;
+      }
+    }
+    @media screen and (min-width: 1900px) {
+      .landing-leads-cyber .flex-fluent-container > div:last-of-type {
+          flex-basis: 30%;
+      }
+    }
+  
+  .sections-links {
+    color: #333232;
+    font-size: 15px;
+    font-family: Quicksand, sans-serif;
+    font-weight: 500;
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+  .grid-sections-links {
+    padding-top: 20px;
+}
+  @media (max-width: 600px){
+      .sections-links  {
+        color: #333232;
+        font-size: 15px;
+        font-family: Quicksand, sans-serif;
+        font-weight: 500;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  span.collection-tbx {
+    font-family: "Quicksand",sans-serif;
+    font-size: 11.0pt;
+    font-weight: 400;
+}
+  </style>
+  
+ <div class="page landing landing-leads-cyber">
+      <div class="flex-fluent-container">
+          {% section 'image-banner-cyber' %}
+          {% section 'register-form' %}
+      </div>
+      {% section 'main-title-cyber' %}
+      <div class="cyber-questions">
+          <div class="grid">
+              <div class="grid__item questions-cyber">
+                <h1 style="font-weight: 600;">1. ¿Qué es CYBER THE BOX?</h1>
+                  <div class="grid__item">
+                        <p style="font-weight: 500;font-size: 15px;">CYBER THE BOX es un evento de Descuentos en línea. Durante estos días, puedes encontrar ofertas especiales en una amplia variedad de ropa, calzado y accesorios. Oportunidad ideal para encontrar miles de productos de tus marcas favoritas a precios increíbles.</p>
+                  </div>
+              </div>
+          </div>
+          <div class="grid">
+              <div class="grid__item questions-cyber">
+                <h1 style="font-weight: 600;">2. ¿Cuándo es CYBER THE BOX? </h1>
+                  <div class="grid__item">
+                      <p style="font-weight: 500;font-size: 15px;">Este año podrás aprovechar de las mejores ofertas en CYBER THE BOX del 15 al 19 de Abril 2023.</p>
+                  </div>
+              </div>
+          </div>
+          <div class="grid">
+              <div class="grid__item questions-cyber">
+                <h1 style="font-weight: 600;">3. ¿Qué tipos de productos estarán en oferta durante CYBER THE BOX?  </h1>
+                  <div class="grid__item">
+                      <p style="font-weight: 500;font-size: 15px;">Durante CYBER THE BOX, encontrarás descuentos en ropa calzado y accesorios.</p>
+                  </div>
+              </div>
+          </div>
+          <div class="grid">
+              <div class="grid__item questions-cyber">
+                <h1 style="font-weight: 600;">4. ¿Cómo puedo aprovechar las ofertas de CYBER THE BOX?</h1>
+                  <div class="grid__item">
+                      <p style="font-weight: 500;font-size: 15px;">Aprovecha al máximo las ofertas durante CYBER THE BOX con una buena planificación. Crea una lista de deseos, mantente informado y lee los términos y condiciones cuidadosamente.</p>
+                  </div>
+              </div>
+          </div>    
+      </div>
+  </div>

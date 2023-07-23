@@ -1,0 +1,30 @@
+<div style="clear:both;">
+  <p>
+    <label for="bday">Cumpleaños:</label>
+    <input id="bday1" type="text" value="" autofill="do-not-autofill" readonly="readonly" />
+    <input id="bdayValue" name="customer[note][dob]" type="hidden"/>
+  </p>
+</div>
+<script>
+  function defer(method, validation) {
+    if (validation()) {
+      method();
+    } else {
+      setTimeout(function() { defer(method, validation) }, 50);
+    }
+  }
+
+  defer(function(){
+    $(function() {
+      $('#bday1').datepicker({
+          dateFormat: 'dd-mm-yy',
+          altFormat: 'yy-mm-dd',
+          altField: '#bdayValue',
+          yearRange: '1930:now',
+          changeMonth: true,
+          changeYear: true,
+      });
+    });
+  }, function() { return window.jQuery && $.datepicker  })
+
+</script>
