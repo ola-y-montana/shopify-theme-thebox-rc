@@ -1,3 +1,12 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
 {
   "current": {
     "color_text": "#3a3a3a",
@@ -4155,7 +4164,7 @@
           "show_more_button_link": "https:\/\/thebox.com.pe\/collections\/marcas\/dvk",
           "panel_bg_color": "#ffffff",
           "preview_of_next_item": true,
-          "collection": "",
+          "collection": "outfits-the-box",
           "collection_filter": "",
           "mobile_carousel": false,
           "blocks_shown": 8,
