@@ -1,54 +1,46 @@
 /** start: tracking event V2 **/
 
-addEventListener("DOMContentLoaded", (event) => {
+addEventListener('DOMContentLoaded', (event) => {
   /** variable **/
   if (!Utils.isCollectionPage) {
     const isCollectionPage = () => {
-      return window.location.pathname.includes("/collections");
+      return window.location.pathname.includes('/collections');
     };
 
     Utils.isCollectionPage = isCollectionPage;
   }
 
   if (window.Analytics) {
-    var ANALYTICS_KEY = "boostPFSAnalytics";
-    var SESSION_KEY = "boostPFSSessionId";
-    var CLICKED_PRODUCT_KEY = "boostPFSClickedProduct";
-    var CART_TOKEN = "";
-    var SESSION = "";
+    var ANALYTICS_KEY = 'boostPFSAnalytics';
+    var SESSION_KEY = 'boostPFSSessionId';
+    var CLICKED_PRODUCT_KEY = 'boostPFSClickedProduct';
+    var CART_TOKEN = '';
+    var SESSION = '';
     var VIEWED_PRODUCT_DATA = null;
-    var boostPFSRequestIds = "boostPFSRequestIds";
+    var boostPFSRequestIds = 'boostPFSRequestIds';
     var AnalyticsEnum = {
       UserAction: {
-        VIEW_PRODUCT: "view_product",
-        QUICK_VIEW: "quick_view",
-        ADD_TO_CART: "add_to_cart",
-        BUY_NOW: "buy_now",
+        VIEW_PRODUCT: 'view_product',
+        QUICK_VIEW: 'quick_view',
+        ADD_TO_CART: 'add_to_cart',
+        BUY_NOW: 'buy_now',
       },
       Action: {
-        FILTER: "filter",
-        SEARCH: "search",
-        SUGGEST: "suggest",
+        FILTER: 'filter',
+        SEARCH: 'search',
+        SUGGEST: 'suggest',
       },
     };
-      
-    /** utils function **/  
+
+    /** utils function **/
 
     /**
      * Init analytics on instant search
      */
     Analytics.initInstantSearch = function () {
-      if (Settings.getSettingValue("search.enableSuggestion")) {
-        document.addEventListener(
-          "click",
-          Analytics.onClickProductInSuggestion,
-          true
-        );
-        document.addEventListener(
-          "keydown",
-          Analytics.onClickProductInSuggestion,
-          true
-        );
+      if (Settings.getSettingValue('search.enableSuggestion')) {
+        document.addEventListener('click', Analytics.onClickProductInSuggestion, true);
+        document.addEventListener('keydown', Analytics.onClickProductInSuggestion, true);
       }
     };
 
@@ -57,11 +49,7 @@ addEventListener("DOMContentLoaded", (event) => {
      */
     Analytics.initCollectionSearchPage = function () {
       if (Selector.trackingProduct && jQ(Selector.products).length > 0) {
-        document.addEventListener(
-          "click",
-          Analytics.onClickProductInFilterResult,
-          true
-        );
+        document.addEventListener('click', Analytics.onClickProductInFilterResult, true);
       }
     };
 
@@ -80,21 +68,13 @@ addEventListener("DOMContentLoaded", (event) => {
         }
       });
 
-      /** If go to product page through our app, bind add to cart & buy now event **/  
+      /** If go to product page through our app, bind add to cart & buy now event **/
       if (Utils.isProductPage()) {
         if (Selector.trackingAddToCart) {
-          document.addEventListener(
-            "click",
-            Analytics.onClickAddToCartInProductPage,
-            true
-          );
+          document.addEventListener('click', Analytics.onClickAddToCartInProductPage, true);
         }
         if (Selector.trackingBuyNow) {
-          document.addEventListener(
-            "click",
-            Analytics.onClickBuyNowInProductPage,
-            true
-          );
+          document.addEventListener('click', Analytics.onClickBuyNowInProductPage, true);
         }
       }
 
@@ -102,30 +82,36 @@ addEventListener("DOMContentLoaded", (event) => {
        * Remove this product in clicked data for v2 only tracking add_to_cart, buy_now use v3 when click from here
        * avoid duplicate event add_to_cart, buy_now
        */
-      document.addEventListener(
-        "click",
-        Analytics.detectClickFromRecommendation,
-        true
-      );
+      document.addEventListener('click', Analytics.detectClickFromRecommendation, true);
     };
 
-    Analytics.refreshCartToken = function (dataToRetry) {
-      /** Set up HTTP request **/  
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/cart.js");
-      xhr.onload = function () {
-        if (xhr.readyState > 3 && xhr.status == 200) {
-          // On sucesss
-          var cart = JSON.parse(xhr.responseText);
-          var cartToken = cart.item_count <= 0 ? "" : cart.token;
-          CART_TOKEN = cartToken;
-          if (dataToRetry) {
-            dataToRetry.ct = cartToken;
-            Analytics.sendProductClickData(dataToRetry, true);
+    Analytics.refreshCartToken = function (dataToRetry, retryCount = 3) {
+      if (retryCount <= 0) {
+        return;
+      }
+
+      fetch('/cart.js', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          /*** min length token valid => 58, if < 58 token empty **/
+          if (data.token && data.token.length > 58) {
+            CART_TOKEN = data.token;
+            if (dataToRetry) {
+              dataToRetry.ct = data.token;
+              Analytics.sendProductClickData(dataToRetry, true);
+            }
+          } else {
+            setTimeout(() => Analytics.refreshCartToken(dataToRetry, retryCount - 1), 1000);
           }
-        }
-      };
-      xhr.send();
+        })
+        .catch((error) => {
+          setTimeout(() => Analytics.refreshCartToken(dataToRetry, retryCount - 1), 1000);
+        });
     };
 
     /**
@@ -133,14 +119,11 @@ addEventListener("DOMContentLoaded", (event) => {
      * @return {string} random unique ID
      */
     Analytics.generateUUID = function () {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-        /[xy]/g,
-        function (c) {
-          var r = (Math.random() * 16) | 0,
-            v = c == "x" ? r : (r & 0x3) | 0x8;
-          return v.toString(16);
-        }
-      );
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (Math.random() * 16) | 0,
+          v = c == 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      });
     };
 
     /**
@@ -152,9 +135,7 @@ addEventListener("DOMContentLoaded", (event) => {
       if (!event || !event.target) return;
       var $clickedElement = jQ(event.target);
 
-      var action = Utils.isSearchPage()
-        ? AnalyticsEnum.Action.SEARCH
-        : AnalyticsEnum.Action.FILTER;
+      var action = Utils.isSearchPage() ? AnalyticsEnum.Action.SEARCH : AnalyticsEnum.Action.FILTER;
       var userAction = AnalyticsEnum.UserAction.VIEW_PRODUCT;
       if (
         Selector.trackingQuickView &&
@@ -163,29 +144,28 @@ addEventListener("DOMContentLoaded", (event) => {
         userAction = AnalyticsEnum.UserAction.QUICK_VIEW;
       }
       if (
-        Selector.trackingAddToCart &&
-        $clickedElement.closest(Selector.trackingAddToCart).length > 0
+        (Selector.trackingAddToCart &&
+          $clickedElement.closest(Selector.trackingAddToCart).length > 0) ||
+        ($clickedElement.closest(Selector.products).length > 0 &&
+          Analytics.isClickAddToCart(event.target))
       ) {
         userAction = AnalyticsEnum.UserAction.ADD_TO_CART;
       }
-      if (
-        Selector.trackingBuyNow &&
-        $clickedElement.closest(Selector.trackingBuyNow).length > 0
-      ) {
+      if (Selector.trackingBuyNow && $clickedElement.closest(Selector.trackingBuyNow).length > 0) {
         userAction = AnalyticsEnum.UserAction.BUY_NOW;
       }
 
       /** If the user clicked quickview button,
        * and then click add to cart/buy now within the quick view modal,
        * but the modal is outside of the product grid item,
-       * we'll use the last clicked id from the quick view event 
-       **/  
-      var productId = "";
+       * we'll use the last clicked id from the quick view event
+       **/
+      var productId = '';
       var $productElement = $clickedElement.closest(Selector.trackingProduct);
-      /** If found product grid item **/  
+      /** If found product grid item **/
       if ($productElement.length > 0) {
-        productId = $productElement.attr("data-id");
-        /** If not found product grid item, maybe we're inside a quickview modal. **/  
+        productId = $productElement.attr('data-id');
+        /** If not found product grid item, maybe we're inside a quickview modal. **/
       } else if (VIEWED_PRODUCT_DATA) {
         /** Add to cart and buy now within modal **/
         if (
@@ -216,16 +196,14 @@ addEventListener("DOMContentLoaded", (event) => {
     Analytics.onClickProductInSuggestion = function (event) {
       if (!event || !event.target) return;
 
-      /** Check for keyboard enter event **/  
-      if (event.type == "keydown" && event.keyCode != 13) return;
+      /** Check for keyboard enter event **/
+      if (event.type == 'keydown' && event.keyCode != 13) return;
 
       var $clickedElement = jQ(event.target);
-      var $productElement = $clickedElement.closest(
-        "." + Class.searchSuggestionItem + "-product"
-      );
+      var $productElement = $clickedElement.closest('.' + Class.searchSuggestionItem + '-product');
       if (!$productElement) return;
 
-      var productId = $productElement.attr("data-id");
+      var productId = $productElement.attr('data-id');
       if (!productId) return;
 
       var data = Analytics.buildProductClickData(
@@ -239,24 +217,27 @@ addEventListener("DOMContentLoaded", (event) => {
     Analytics.isClickAddToCart = function (activeElement) {
       if (!activeElement) return false;
       if (
-        ["SPAN", "XVG"].includes(activeElement.tagName) &&
-        activeElement.parentElement?.tagName === "BUTTON"
+        ['SPAN', 'XVG'].includes(activeElement.tagName) &&
+        activeElement.parentElement?.tagName === 'BUTTON'
       ) {
         activeElement = activeElement.parentElement;
       }
 
       const addToCartKeywords = [
-        "customizeAdd",
-        "add to cart",
-        "add-to-cart",
-        "add to bag",
-        "add_to_cart",
-        "addtocart",
-        "data-product-form-add",
+        'boost-pfs-addtocart-btn',
+        'customizeAdd',
+        'add to cart',
+        'add-to-cart',
+        'add to bag',
+        'add_to_cart',
+        'addtocart',
+        'data-product-form-add',
         'name="add"',
+        'add to basket',
+        'atc-button',
       ];
 
-      const innerText = activeElement?.outerHTML?.toLowerCase() || "";
+      const innerText = activeElement?.outerHTML?.toLowerCase() || '';
 
       return addToCartKeywords.some((keyword) => innerText.includes(keyword));
     };
@@ -276,14 +257,10 @@ addEventListener("DOMContentLoaded", (event) => {
           u: AnalyticsEnum.UserAction.ADD_TO_CART,
         };
 
-        var productClickedData =
-          Analytics.getLocalStorage(CLICKED_PRODUCT_KEY) || {};
+        var productClickedData = Analytics.getLocalStorage(CLICKED_PRODUCT_KEY) || {};
 
         if (productClickedData[boostPFSAppConfig.general.product_id]) {
-          data = Object.assign(
-            productClickedData[boostPFSAppConfig.general.product_id],
-            data
-          );
+          data = Object.assign(productClickedData[boostPFSAppConfig.general.product_id], data);
           Analytics.addProductClickData(data);
           Analytics.sendProductClickData(data);
         }
@@ -291,11 +268,7 @@ addEventListener("DOMContentLoaded", (event) => {
     };
 
     Analytics.onClickBuyNowInProductPage = function (event) {
-      if (
-        event &&
-        event.target &&
-        jQ(event.target).closest(Selector.trackingBuyNow).length > 0
-      ) {
+      if (event && event.target && jQ(event.target).closest(Selector.trackingBuyNow).length > 0) {
         var data = {
           tid: Globals.shopDomain,
           pid: boostPFSAppConfig.general.product_id.toString(),
@@ -303,8 +276,7 @@ addEventListener("DOMContentLoaded", (event) => {
           ct: CART_TOKEN,
         };
 
-        var productClickedData =
-          Analytics.getLocalStorage(CLICKED_PRODUCT_KEY) || {};
+        var productClickedData = Analytics.getLocalStorage(CLICKED_PRODUCT_KEY) || {};
 
         if (productClickedData[boostPFSAppConfig.general.product_id]) {
           data = productClickedData[boostPFSAppConfig.general.product_id];
@@ -325,26 +297,23 @@ addEventListener("DOMContentLoaded", (event) => {
     Analytics.buildProductClickData = (productId, userAction, action) => {
       var currentTime = new Date();
 
-      /** Get cart token from global **/  
+      /** Get cart token from global **/
       var cartToken = CART_TOKEN;
 
-      /** Merge quick_view and view_product when sending to backend **/  
+      /** Merge quick_view and view_product when sending to backend **/
       var mergeUserAction =
         userAction == AnalyticsEnum.UserAction.QUICK_VIEW
           ? AnalyticsEnum.UserAction.VIEW_PRODUCT
           : userAction;
 
-      /** Get query string data **/  
-      var queryString = "";
+      /** Get query string data **/
+      var queryString = '';
       if (action == AnalyticsEnum.Action.FILTER) {
-        queryString += "collection_scope=" + Globals.collectionId;
+        queryString += 'collection_scope=' + Globals.collectionId;
       } else {
-        queryString += "q=" + Globals.currentTerm;
+        queryString += 'q=' + Globals.currentTerm;
       }
-      if (
-        action == AnalyticsEnum.Action.FILTER ||
-        action == AnalyticsEnum.Action.SEARCH
-      ) {
+      if (action == AnalyticsEnum.Action.FILTER || action == AnalyticsEnum.Action.SEARCH) {
         var filteredKeys = Object.keys(Globals.queryParams).filter((key) =>
           key.startsWith(Globals.prefix)
         );
@@ -353,10 +322,10 @@ addEventListener("DOMContentLoaded", (event) => {
             var values = Globals.queryParams[key];
             if (Array.isArray(values)) {
               values.forEach((value) => {
-                queryString += "&" + key + "=" + encodeURIComponent(value);
+                queryString += '&' + key + '=' + encodeURIComponent(value);
               });
             } else {
-              queryString += "&" + key + "=" + encodeURIComponent(values);
+              queryString += '&' + key + '=' + encodeURIComponent(values);
             }
           });
         }
@@ -364,7 +333,7 @@ addEventListener("DOMContentLoaded", (event) => {
 
       var requestIds = Analytics.getLocalStorage(boostPFSRequestIds);
 
-      /** Build data **/  
+      /** Build data **/
       var data = {
         tid: Globals.shopDomain,
         ct: cartToken,
@@ -377,7 +346,7 @@ addEventListener("DOMContentLoaded", (event) => {
         rid: requestIds[action]?.rid,
       };
 
-      /** save productClickedData key **/  
+      /** save productClickedData key **/
       var preValue = Analytics.getLocalStorage(CLICKED_PRODUCT_KEY) || {};
 
       Analytics.setLocalStorage(CLICKED_PRODUCT_KEY, {
@@ -390,31 +359,23 @@ addEventListener("DOMContentLoaded", (event) => {
       return data;
     };
 
-    /** catch event when click productItem in Recommendation **/  
+    /** catch event when click productItem in Recommendation **/
     Analytics.detectClickFromRecommendation = function (event) {
       if (!event || !event.target) return;
 
       var $clickedElement = jQ(event.target);
-      var productItemV3 = $clickedElement.closest(".boost-sd__product-item");
+      var productItemV3 = $clickedElement.closest('.boost-sd__product-item');
       if (productItemV3.length > 0) {
         var productId = productItemV3[0].id;
-        var variantId = productItemV3[0]["data-product-id"];
+        var variantId = productItemV3[0]['data-product-id'];
 
-        productId &&
-          Analytics.removeProductIdClickedProductItemInRecommendation(
-            productId
-          );
-        variantId &&
-          Analytics.removeProductIdClickedProductItemInRecommendation(
-            variantId
-          );
+        productId && Analytics.removeProductIdClickedProductItemInRecommendation(productId);
+        variantId && Analytics.removeProductIdClickedProductItemInRecommendation(variantId);
       }
     };
 
-    /** Remove productId from Object CLICKED_PRODUCT_KEY avoid duplicate event when v2 use recommendation **/  
-    Analytics.removeProductIdClickedProductItemInRecommendation = function (
-      productId
-    ) {
+    /** Remove productId from Object CLICKED_PRODUCT_KEY avoid duplicate event when v2 use recommendation **/
+    Analytics.removeProductIdClickedProductItemInRecommendation = function (productId) {
       var preValue = Analytics.getLocalStorage(CLICKED_PRODUCT_KEY) || {};
 
       delete preValue[productId];
@@ -429,11 +390,11 @@ addEventListener("DOMContentLoaded", (event) => {
      * @param {Object} data - product click data
      */
     Analytics.addProductClickData = function (data) {
-      /** Get data list from local storage **/  
+      /** Get data list from local storage **/
       var dataList = Analytics.getLocalStorage(ANALYTICS_KEY);
       if (!Array.isArray(dataList)) dataList = [];
 
-      /** Add new data to the list, without duplicated id **/  
+      /** Add new data to the list, without duplicated id **/
       var newDataList = dataList.filter((x) => x.pid != data.productId);
       newDataList.push(data);
 
@@ -441,11 +402,11 @@ addEventListener("DOMContentLoaded", (event) => {
     };
 
     Analytics.removeProductClickData = function (productId) {
-      /** Get data list from local storage **/  
+      /** Get data list from local storage **/
       var dataList = Analytics.getLocalStorage(ANALYTICS_KEY);
       if (!Array.isArray(dataList)) return;
 
-      /** Filter for products that doesn't match the id **/  
+      /** Filter for products that doesn't match the id **/
       var newDataList = dataList.filter((x) => x.pid != productId);
       Analytics.setLocalStorage(ANALYTICS_KEY, newDataList);
     };
@@ -463,7 +424,7 @@ addEventListener("DOMContentLoaded", (event) => {
         if (value != null) {
           localStorage.setItem(key, JSON.stringify(value));
         } else {
-          localStorage.setItem(key, "");
+          localStorage.setItem(key, '');
         }
       } catch {}
     };
@@ -474,7 +435,13 @@ addEventListener("DOMContentLoaded", (event) => {
      * @param {boolean} triedToGetToken - tried to get cart token by calling cart.js or not
      */
     Analytics.sendProductClickData = function (data, triedToGetToken) {
-      if(!data.rid) return;
+      if (!data.rid) return;
+      /** addToCart or BuyNow refresh cartToken  **/
+      if (
+        [AnalyticsEnum.UserAction.ADD_TO_CART, AnalyticsEnum.UserAction.BUY_NOW].includes(data.u)
+      ) {
+        triedToGetToken = false;
+      }
       if (!triedToGetToken && !data.ct) {
         setTimeout(function () {
           Analytics.refreshCartToken(data);
@@ -486,10 +453,10 @@ addEventListener("DOMContentLoaded", (event) => {
 
       Analytics.removeProductClickData(data.pid);
 
-      /** Set up HTTP request **/  
+      /** Set up HTTP request **/
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", Api.getApiUrl("analytics"));
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.open('POST', Api.getApiUrl('analytics'));
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
       xhr.send(JSON.stringify(data));
     };
 
@@ -506,11 +473,8 @@ addEventListener("DOMContentLoaded", (event) => {
       return SESSION;
     };
 
-    /** customize function **/  
-    if (
-      Utils.isSearchPage() ||
-      (Utils.isCollectionPage() && !Utils.isProductPage())
-    ) {
+    /** customize function **/
+    if (Utils.isSearchPage() || (Utils.isCollectionPage() && !Utils.isProductPage())) {
       FilterApi.afterCall = function (result, eventType, eventInfo) {
         var key = AnalyticsEnum.Action.FILTER;
         if (Utils.isSearchPage()) {
@@ -544,7 +508,7 @@ addEventListener("DOMContentLoaded", (event) => {
     Analytics.init = function () {
       if (!window.XMLHttpRequest) return;
 
-      CART_TOKEN = "";
+      CART_TOKEN = '';
       SESSION = Analytics.getLocalStorage(SESSION_KEY);
       if (!SESSION) {
         SESSION = Analytics.generateUUID();
@@ -560,10 +524,10 @@ addEventListener("DOMContentLoaded", (event) => {
 
     setTimeout(function awaitTriggerDone() {
       Analytics?.init();
-      console.log("Have customize tracking events for analytics V2");
+      console.log('Have customize tracking events for analytics V2');
     }, 1000);
   } else {
-    console.log("This page have not tracking events for analytics V2");
+    console.log('This page have not tracking events for analytics V2');
   }
 });
 
